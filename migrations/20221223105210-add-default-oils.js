@@ -15,23 +15,15 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('oils', {
-    'id': {
-      type: "int",
-      primaryKey: true,
-      autoIncrement: true,
-      unsigned: true
-    },
-    'oil': {
-      type: "string",
-      length: 65,
-      notNull: true
-    }
-  })
+  db.insert("oils", ['oil'], ['Aloe Vera Oil']);
+  db.insert("oils", ['oil'], ['Soy Bean Oil']);
+  db.insert("oils", ['oil'], ['Canola Oil']);
+  db.insert("oils", ['oil'], ['Animal Fats']);
+  return null;
 };
 
 exports.down = function(db) {
-  db.createTable('oils')
+  return null;
 };
 
 exports._meta = {

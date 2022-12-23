@@ -15,23 +15,17 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('oils', {
-    'id': {
-      type: "int",
-      primaryKey: true,
-      autoIncrement: true,
-      unsigned: true
-    },
-    'oil': {
-      type: "string",
-      length: 65,
-      notNull: true
-    }
-  })
+  db.insert("colors", ['color'], ['Red']);
+  db.insert("colors", ['color'], ['Orange']);
+  db.insert("colors", ['color'], ['Yellow']);
+  db.insert("colors", ['color'], ['Green']);
+  db.insert("colors", ['color'], ['Blue']);
+  db.insert("colors", ['color'], ['Purple']);
+  return null;
 };
 
 exports.down = function(db) {
-  db.createTable('oils')
+  return null;
 };
 
 exports._meta = {

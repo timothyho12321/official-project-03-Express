@@ -15,23 +15,23 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('oils', {
+  return db.createTable('bases', {
     'id': {
       type: "int",
       primaryKey: true,
       autoIncrement: true,
       unsigned: true
     },
-    'oil': {
+    'base': {
       type: "string",
-      length: 65,
+      length: 45,
       notNull: true
     }
   })
 };
 
 exports.down = function(db) {
-  db.createTable('oils')
+  return db.dropTable('bases');
 };
 
 exports._meta = {

@@ -15,23 +15,17 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('oils', {
-    'id': {
-      type: "int",
-      primaryKey: true,
-      autoIncrement: true,
-      unsigned: true
-    },
-    'oil': {
-      type: "string",
-      length: 65,
-      notNull: true
-    }
-  })
+  db.insert("order_statuses", ['status'], ['Paid']);
+  db.insert("order_statuses", ['status'], ['Processing']);
+  db.insert("order_statuses", ['status'], ['Pending']);
+  db.insert("order_statuses", ['status'], ['Shipping']);
+  db.insert("order_statuses", ['status'], ['Delivered']);
+  db.insert("order_statuses", ['status'], ['Completed']);
+  return null;
 };
 
 exports.down = function(db) {
-  db.createTable('oils')
+  return null;
 };
 
 exports._meta = {
