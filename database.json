@@ -1,0 +1,8 @@
+{
+    "dev": {
+        "driver": "mysql",
+        "user": "admin",
+        "password": "password123",
+        "database": "soap_shop"
+    }
+}
