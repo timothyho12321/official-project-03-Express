@@ -18,6 +18,9 @@ const Oil = bookshelf.model('Oil', {
 
 const Type = bookshelf.model('Type', {
     tableName: 'types',
+    soaps(){
+        return this.hasMany('Soap')
+    }
 });
 
 const Purpose = bookshelf.model('Purpose', {
@@ -54,6 +57,9 @@ const Account = bookshelf.model('Account', {
     tableName: 'accounts',
     role() {
         return this.belongsTo('Role')
+    },
+    orders() {
+        return this.hasMany('Order')
     }
 })
 
@@ -62,6 +68,9 @@ const Order = bookshelf.model('Order', {
     tableName: 'orders',
     order_status() {
         return this.belongsTo('OrderStatus')
+    },
+    account() {
+        return this.belongsTo('Account')
     }
 });
 
