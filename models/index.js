@@ -3,11 +3,17 @@ const bookshelf = require('../bookshelf')
 
 const Base = bookshelf.model('Base', {
     tableName: 'bases',
+    soaps(){
+        return this.hasMany('Soap')
+    }
 });
 
 
 const Oil = bookshelf.model('Oil', {
     tableName: 'oils',
+    soaps(){
+        return this.hasMany('Soap')
+    }
 });
 
 const Type = bookshelf.model('Type', {
@@ -60,6 +66,20 @@ const Order = bookshelf.model('Order', {
 });
 
 
+const Soap = bookshelf.model('Soap', {
+    tableName: 'soaps',
+    base() {
+        return this.belongsTo('Base')
+    },
+    oil() {
+        return this.belongsTo('Oil')
+    },
+    type() {
+        return this.belongsTo('Type')
+    }
+});
+
+
 module.exports =
 {
     Base,
@@ -72,5 +92,6 @@ module.exports =
     OrderStatus,
     BlackListedToken,
     Account,
-    Order
+    Order,
+    Soap
 };
