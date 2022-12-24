@@ -1,9 +1,19 @@
 const express = require("express");
+const { Account } = require("../models");
 const router = express.Router(); 
 
 
 
-router.get('/', (req,res)=>{
+router.get('/', async (req,res)=>{
+
+   const account = await Account.collection().fetch({
+    withRelated: ['role']
+})
+
+
+// console.log(account.toJSON());
+
+// res.json({'results':account.toJSON()})
 
     res.render('landing/index')
 })
