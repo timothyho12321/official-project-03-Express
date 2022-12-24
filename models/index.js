@@ -28,26 +28,36 @@ const Color = bookshelf.model('Color', {
 
 const Role = bookshelf.model('Role', {
     tableName: 'roles',
-    accounts(){
+    accounts() {
         return this.hasMany('Account')
     }
 });
 
 const OrderStatus = bookshelf.model('OrderStatus', {
     tableName: 'order_statuses',
+    orders(){
+        return this.hasMany('Order')
+    }
 });
 
 const BlackListedToken = bookshelf.model('BlackListedToken', {
     tableName: 'blacklisted_tokens',
 });
 
-const Account = bookshelf.model('Account',{
+const Account = bookshelf.model('Account', {
     tableName: 'accounts',
-    role(){
+    role() {
         return this.belongsTo('Role')
     }
 })
 
+
+const Order = bookshelf.model('Order', {
+    tableName: 'orders',
+    order_status() {
+        return this.belongsTo('OrderStatus')
+    }
+});
 
 
 module.exports =
@@ -61,5 +71,6 @@ module.exports =
     Role,
     OrderStatus,
     BlackListedToken,
-    Account
+    Account,
+    Order
 };

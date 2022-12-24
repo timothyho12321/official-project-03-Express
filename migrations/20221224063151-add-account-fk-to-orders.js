@@ -15,26 +15,25 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.addColumn('accounts', 'role_id',{
-    'type':'int',
+  return db.addColumn('orders', 'account_id', {
+    'type': 'int',
     'unsigned': true,
-    'notNull':true,
-   
+    'notNull': true,
+
     'foreignKey': {
-      'name':'account_role_fk',
-      'table':'roles',
-      'mapping':'id',
-      'rules':{
+      'name': 'order_account_fk',
+      'table': 'accounts',
+      'mapping': 'id',
+      'rules': {
         'onDelete': 'cascade',
         'onUpdate': 'restrict'
       }
-    }    
-});
-
+    }
+  });
 };
 
 exports.down = function(db) {
-  return db.removeColumn('accounts','role_id');
+  return db.removeColumn('orders', 'account_id');
 };
 
 exports._meta = {

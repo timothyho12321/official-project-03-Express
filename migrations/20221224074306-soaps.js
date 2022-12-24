@@ -15,72 +15,58 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('accounts', {
+  return db.createTable('soaps', {
     'id': {
       type: "int",
       primaryKey: true,
       autoIncrement: true,
       unsigned: true
     },
-    'first_name': {
+    'name': {
       type: "string",
-      length: 50,
+      length: 80,
       notNull: true
     },
-    'last_name': {
-      type: "string",
-      length: 50,
-      notNull: true
-    },
-    'contact_number': {
+    'cost': {
       type: "int",
-      unsigned: true,
       notNull: true
     },
-    'email': {
+    'width': {
+      type: "smallint",
+      notNull: true
+    },
+    'height': {
+      type: "smallint",
+      notNull: true
+    },
+    'shape': {
       type: "string",
-      length: 320,
+      length: 90,
       notNull: true
     },
-    'password': {
-      type: "string",
-      length: 200,
-      notNull: true
-    },
-    'created_date': {
+    'date_created': {
       type: "date",
       notNull: true
     },
-    'modified_date': {
+    'last_updated': {
       type: "date",
     },
-    'shipping_country': {
+    'image_url': {
       type: "string",
-      length: 20,
+      length: 2500,
       notNull: true
     },
-    'shipping_address_1': {
+    'thumbnail_url': {
       type: "string",
-      length: 150,
-      notNull: true
-    },
-    'shipping_address_2': {
-      type: "string",
-      length: 150,
-      notNull: true
-    },
-    'shipping_postal_code': {
-      type: "string",
-      length: 15,
+      length: 2500,
       notNull: true
     }
 
   })
-
 };
 
 exports.down = function (db) {
-  return db.dropTable('accounts');
+  return db.dropTable('soaps');
 };
 
 exports._meta = {

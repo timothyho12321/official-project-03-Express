@@ -1,9 +1,4 @@
 
-INSERT INTO titles(title, cost, description, date,
-    stock, height, width)
-VALUES("Mary Poppins", 20, "Color Poster", "2022-10-10", 2, 50, 40);
-
-
 
 INSERT INTO accounts(first_name, last_name
     , contact_number, email
@@ -17,4 +12,19 @@ VALUES(
     , "password", "2022-10-11", 
     "Singapore", "Ang Mo Kio Avenue 1",
     "03-04", "100200", "3"
+);
+
+
+
+
+INSERT INTO orders(total_cost , payment_reference
+    , payment_type , receipt_url 
+    , order_date,
+    order_status_id, account_id 
+)
+VALUES(
+    1000, "ABC123"
+    , "credit", "www.google.com"
+    , "2022-10-11", 
+    1,2
 );
