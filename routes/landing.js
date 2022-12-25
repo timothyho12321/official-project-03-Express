@@ -1,5 +1,5 @@
 const express = require("express");
-const { Account, Soap, Order, Base } = require("../models");
+const { Account, Soap, Order, Base, Variant } = require("../models");
 const router = express.Router();
 
 
@@ -24,21 +24,21 @@ router.get('/', async (req, res) => {
         withRelated: ['account', 'order_status']
     })
 
-    console.log(order.toJSON());
+    // console.log(order.toJSON());
     // res.json({ 'results': order.toJSON() })
 
 
-
-    // check many to many for purposes
     const soapwithAll = await Soap.collection().fetch({
         withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
     })
 
     
+    const variant = await Variant.collection().fetch({
+        withRelated: ['color', 'soap']
+    })
 
-
-    console.log(soapwithAll.toJSON());
-    res.json({ 'results': soapwithAll.toJSON() })
+    console.log(variant.toJSON());
+    res.json({ 'results': variant.toJSON() })
 
 
     // res.render('landing/index')

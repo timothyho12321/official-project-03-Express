@@ -65,6 +65,19 @@ INSERT INTO purposes_soaps(purpose_id, soap_id
         );
 
 
+        INSERT INTO variants(image_url,
+            thumbnail_url, stock, name, color_id,
+            soap_id
+        )
+        VALUES(
+            "www.google.com", "www.youtube.com",
+            3, "Big Size Soap", 5, 1
+        );
+        
+
+
+
+
 
 
 

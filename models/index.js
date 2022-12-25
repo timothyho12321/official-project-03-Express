@@ -26,20 +26,23 @@ const Type = bookshelf.model('Type', {
 
 const Purpose = bookshelf.model('Purpose', {
     tableName: 'purposes',
-    soaps(){
+    soaps() {
         return this.belongsToMany('Soap')
     }
 });
 
 const Smell = bookshelf.model('Smell', {
     tableName: 'smells',
-    soaps(){
+    soaps() {
         return this.belongsToMany('Soap')
     }
 });
 
 const Color = bookshelf.model('Color', {
     tableName: 'colors',
+    variant() {
+        return this.hasMany('Variant')
+    }
 });
 
 const Role = bookshelf.model('Role', {
@@ -82,7 +85,15 @@ const Order = bookshelf.model('Order', {
 });
 
 
-
+const Variant = bookshelf.model('Variant', {
+    tableName: 'variants',
+    color() {
+        return this.belongsTo('Color')
+    },
+    soap() {
+        return this.belongsTo('Soap')
+    }
+});
 
 const Soap = bookshelf.model('Soap', {
     tableName: 'soaps',
@@ -100,6 +111,9 @@ const Soap = bookshelf.model('Soap', {
     },
     smells() {
         return this.belongsToMany('Smell')
+    },
+    variant() {
+        return this.hasMany('Variant')
     }
 });
 
@@ -118,5 +132,5 @@ module.exports =
     Account,
     Order,
     Soap,
-
+    Variant
 };
