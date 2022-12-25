@@ -77,7 +77,11 @@ INSERT INTO purposes_soaps(purpose_id, soap_id
 
 
 
-
+        INSERT INTO cart_items(quantity, account_id, variant_id
+            )
+            VALUES(
+                3, 1, 1
+            );
 
 
 

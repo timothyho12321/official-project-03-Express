@@ -1,5 +1,5 @@
 const express = require("express");
-const { Account, Soap, Order, Base, Variant } = require("../models");
+const { Account, Soap, Order, Base, Variant, CartItem } = require("../models");
 const router = express.Router();
 
 
@@ -37,8 +37,14 @@ router.get('/', async (req, res) => {
         withRelated: ['color', 'soap']
     })
 
-    console.log(variant.toJSON());
-    res.json({ 'results': variant.toJSON() })
+
+    const cartItem = await CartItem.collection().fetch({
+        withRelated: ['account', 'variant']
+    })
+
+
+    console.log(cartItem.toJSON());
+    res.json({ 'results': cartItem.toJSON() })
 
 
     // res.render('landing/index')
