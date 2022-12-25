@@ -11,59 +11,35 @@ router.get('/', async (req, res) => {
     // })
 
 
-    // NEED TO DEBUG WHY DOES NOT RETURN WITH RELATED BASE RESULT 
-    // const soap = await Soap.collection().fetch({
-    //     withRelated: ['oil', 'type', 'base']
-    // })
-    let soap;
-    try {
-        soap = await Soap.collection().fetch({
-            withRelated: ['base', 'oil', 'type']
-        })
-    }
-    catch (e) {
+    // let converted = soap.toJSON()
 
-        console.log(e)
-    }
+    // console.log("Soap.id", converted[0].id);
+
+    // console.log("Soap.id", converted[0].oil);
+
+    // console.log("Base", converted[0].base);
 
 
-    //  new Soap({ id: 4 }).fetch({ debug: true, withRelated: ['oil'] }).then(soap => {
-    //     // ...
-    //     console.log(soap.related('oil').toJSON())
-    // })
+    const order = await Order.collection().fetch({
+        withRelated: ['account', 'order_status']
+    })
 
-    // new Soap({ id: 4 }).fetch({ debug: true, withRelated: ['type'] }).then(soap => {
-    //     // ...
-    //     console.log(soap.related('type').toJSON())
-    // })
-
-    // new Soap({ id: 4 }).fetch({ debug: true, withRelated: ['base'] }).then(soap => {
-    //     // ...
-    //     console.log(soap.related('base').toJSON())
-    // })
-
-    let converted = soap.toJSON()
-
-    console.log("Soap.id", converted[0].id);
-
-    console.log("Soap.id", converted[0].oil);
-
-    // base undefined 
-    console.log("Base", converted[0].base);
-
-    // console.log(soap.toJSON());
-    res.json({ 'results': soap.toJSON() })
+    console.log(order.toJSON());
+    // res.json({ 'results': order.toJSON() })
 
 
 
+    // check many to many for purposes
+    const soapwithAll = await Soap.collection().fetch({
+        withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
+    })
+
+    
 
 
-    // const order = await Order.collection().fetch({
-    //     withRelated: ['account', 'order_status']
-    // })
+    console.log(soapwithAll.toJSON());
+    res.json({ 'results': soapwithAll.toJSON() })
 
-    // console.log(order.toJSON());
-    // res.json({'results':order.toJSON()})
 
     // res.render('landing/index')
 })

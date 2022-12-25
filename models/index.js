@@ -5,31 +5,37 @@ const bookshelf = require('../bookshelf')
 
 const Base = bookshelf.model('Base', {
     tableName: 'bases',
-    soaps(){
+    soaps() {
         return this.hasMany('Soap', 'base_id')
     }
 });
 
 const Oil = bookshelf.model('Oil', {
     tableName: 'oils',
-    soaps(){
+    soaps() {
         return this.hasMany('Soap')
     }
 });
 
 const Type = bookshelf.model('Type', {
     tableName: 'types',
-    soaps(){
+    soaps() {
         return this.hasMany('Soap')
     }
 });
 
 const Purpose = bookshelf.model('Purpose', {
     tableName: 'purposes',
+    soaps(){
+        return this.belongsToMany('Soap')
+    }
 });
 
 const Smell = bookshelf.model('Smell', {
     tableName: 'smells',
+    soaps(){
+        return this.belongsToMany('Soap')
+    }
 });
 
 const Color = bookshelf.model('Color', {
@@ -45,7 +51,7 @@ const Role = bookshelf.model('Role', {
 
 const OrderStatus = bookshelf.model('OrderStatus', {
     tableName: 'order_statuses',
-    orders(){
+    orders() {
         return this.hasMany('Order')
     }
 });
@@ -76,6 +82,8 @@ const Order = bookshelf.model('Order', {
 });
 
 
+
+
 const Soap = bookshelf.model('Soap', {
     tableName: 'soaps',
     base() {
@@ -86,6 +94,12 @@ const Soap = bookshelf.model('Soap', {
     },
     type() {
         return this.belongsTo('Type')
+    },
+    purposes() {
+        return this.belongsToMany('Purpose')
+    },
+    smells() {
+        return this.belongsToMany('Smell')
     }
 });
 
@@ -103,5 +117,6 @@ module.exports =
     BlackListedToken,
     Account,
     Order,
-    Soap
+    Soap,
+
 };

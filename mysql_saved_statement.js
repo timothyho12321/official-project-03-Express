@@ -26,7 +26,7 @@ VALUES(
     1000, "ABC123"
     , "credit", "www.google.com"
     , "2022-10-11",
-    1, 3
+    1, 1
 );
 
 
@@ -47,6 +47,25 @@ VALUES(
     "2022-12-15", "www.youtube.com",
     "www.google.com", 1, 2, 3
 );
+
+
+
+
+INSERT INTO purposes_soaps(purpose_id, soap_id
+    )
+    VALUES(
+        2, 1
+    );
+
+
+    INSERT INTO smells_soaps(smell_id, soap_id
+        )
+        VALUES(
+            3, 1
+        );
+
+
+
 
 
 INSERT INTO types(type
