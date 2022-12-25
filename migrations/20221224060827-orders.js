@@ -15,23 +15,47 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('bases', {
+  return db.createTable('orders', {
     'id': {
       type: "int",
       primaryKey: true,
       autoIncrement: true,
       unsigned: true
     },
-    'base': {
-      type: "string",
-      length: 65,
+    'total_cost': {
+      type: "int",
       notNull: true
+    },
+    'payment_reference': {
+      type: "string",
+      length: 150,
+      notNull: true
+    },
+    'payment_type': {
+      type: "string",
+      length: 80,
+      notNull: true
+    },
+    'receipt_url': {
+      type: "string",
+      length: 2100,
+      notNull: true
+    },
+    'order_date': {
+      type: "datetime",
+      notNull: true
+    },
+    'delivery_date': {
+      type: "datetime"
     }
-  })
-};
+    
+
+})
+}
+;
 
 exports.down = function(db) {
-  return db.dropTable('bases');
+  return db.dropTable('orders');
 };
 
 exports._meta = {

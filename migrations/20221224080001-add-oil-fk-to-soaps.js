@@ -15,23 +15,27 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('bases', {
-    'id': {
-      type: "int",
-      primaryKey: true,
-      autoIncrement: true,
-      unsigned: true
-    },
-    'base': {
-      type: "string",
-      length: 65,
-      notNull: true
+  return db.addColumn('soaps', 'oil_id', {
+    'type': 'int',
+    'unsigned': true,
+    'notNull': true,
+
+    'foreignKey': {
+      'name': 'soap_oil_fk',
+      'table': 'oils',
+      'mapping': 'id',
+      'rules': {
+        'onDelete': 'cascade',
+        'onUpdate': 'restrict'
+      }
     }
-  })
+  });
 };
 
 exports.down = function(db) {
-  return db.dropTable('bases');
+
+  db.removeForeignKey('soaps', 'soap_oil_fk');
+  return db.removeColumn('soaps','oil_id');
 };
 
 exports._meta = {
