@@ -24,7 +24,7 @@ exports.up = function(db) {
     },
     'base': {
       type: "string",
-      length: 45,
+      length: 65,
       notNull: true
     }
   })

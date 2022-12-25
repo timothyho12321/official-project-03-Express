@@ -35,6 +35,7 @@ exports.up = function (db) {
 };
 
 exports.down = function (db) {
+  db.removeForeignKey('orders','order_order_status_fk');
   return db.removeColumn('orders','order_status_id');
 };
 

@@ -31,7 +31,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
-  db.createTable('oils')
+  return db.dropTable('oils');
 };
 
 exports._meta = {

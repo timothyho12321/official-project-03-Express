@@ -34,6 +34,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
+  db.removeForeignKey('accounts','account_role_fk');
   return db.removeColumn('accounts','role_id');
 };
 

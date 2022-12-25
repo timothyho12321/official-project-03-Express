@@ -1,13 +1,14 @@
 const bookshelf = require('../bookshelf')
 
 
+
+
 const Base = bookshelf.model('Base', {
     tableName: 'bases',
     soaps(){
-        return this.hasMany('Soap')
+        return this.hasMany('Soap', 'base_id')
     }
 });
-
 
 const Oil = bookshelf.model('Oil', {
     tableName: 'oils',
@@ -78,7 +79,7 @@ const Order = bookshelf.model('Order', {
 const Soap = bookshelf.model('Soap', {
     tableName: 'soaps',
     base() {
-        return this.belongsTo('Base')
+        return this.belongsTo('Base', 'base_id')
     },
     oil() {
         return this.belongsTo('Oil')

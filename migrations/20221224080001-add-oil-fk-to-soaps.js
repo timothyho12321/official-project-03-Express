@@ -33,6 +33,8 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
+
+  db.removeForeignKey('soaps', 'soap_oil_fk');
   return db.removeColumn('soaps','oil_id');
 };
 
