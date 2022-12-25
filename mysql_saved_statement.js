@@ -84,6 +84,13 @@ INSERT INTO purposes_soaps(purpose_id, soap_id
             );
 
 
+            INSERT INTO order_items(quantity, order_id, variant_id
+                )
+                VALUES(
+                    3, 2, 1
+                );
+
+
 
 INSERT INTO types(type
 )

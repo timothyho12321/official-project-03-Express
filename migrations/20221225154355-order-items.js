@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('cart_items', {
+  return db.createTable('order_items', {
     'id': {
       type: "int",
       primaryKey: true,
@@ -31,8 +31,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
-  return db.dropTable('cart_items');
-
+  return db.dropTable('order_items');
 };
 
 exports._meta = {

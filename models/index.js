@@ -127,6 +127,16 @@ const CartItem = bookshelf.model('CartItem', {
     }
 });
 
+const OrderItem = bookshelf.model('OrderItem', {
+    tableName: 'order_items',
+    order() {
+        return this.belongsTo('Order')
+    },
+    variant() {
+        return this.belongsTo('Variant')
+    }
+});
+
 
 module.exports =
 {
@@ -143,5 +153,6 @@ module.exports =
     Order,
     Soap,
     Variant,
-    CartItem
+    CartItem,
+    OrderItem
 };
