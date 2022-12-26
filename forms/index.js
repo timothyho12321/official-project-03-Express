@@ -3,6 +3,7 @@ const forms = require("forms");
 // create some shortcuts
 const fields = forms.fields;
 const validators = forms.validators;
+const widgets = forms.widgets;
 
 var bootstrapField = function (name, object) {
     if (!Array.isArray(object.widget.classes)) { object.widget.classes = []; }
@@ -25,7 +26,9 @@ var bootstrapField = function (name, object) {
 };
 
 
-const createProductForm = () => {
+const createProductForm = (allSmells = [], 
+    allPurposes = [],allBases=[], allOils = [],
+    allTypes=[]) => {
     return forms.create({
         'name': fields.string({
             required: true,
@@ -81,35 +84,45 @@ const createProductForm = () => {
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget: widgets.select(),
+            choices: allBases
         }),
         'oil': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget: widgets.select(),
+            choices: allOils
         }),
         'type': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget: widgets.select(),
+            choices: allTypes
         }),
         'purposes': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget: widgets.multipleSelect(),
+            choices: allPurposes
         }),
         'smells': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget: widgets.multipleSelect(),
+            choices: allSmells
         })
     })
 };
