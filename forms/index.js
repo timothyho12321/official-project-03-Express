@@ -22,7 +22,7 @@ var bootstrapField = function (name, object) {
     var error = object.error ? '<div class="invalid-feedback">' + object.error + '</div>' : '';
 
     var widget = object.widget.toHTML(name, object);
-    return '<div class="form-group">' + label + widget + error + '</div>';
+    return '<div class="form-group" style="width:80%">' + label + widget + error + '</div>';
 };
 
 
@@ -42,21 +42,26 @@ const createProductForm = (allSmells = [],
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.integer(),validators.min(0)]
         }),
         'width': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.integer(),validators.min(0)]
+        
         }),
         'height': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.integer(),validators.min(0)]
+        
         }),
         'shape': fields.string({
             required: true,
@@ -66,20 +71,25 @@ const createProductForm = (allSmells = [],
             }
         }),
         'date_created': fields.date({
+            label: "Date Created",
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget:widgets.date() 
         }),
         'last_updated': fields.date({
+            label: "Last Updated",
             required: false,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget:widgets.date() 
         }),
-        'base': fields.number({
+        'base_id': fields.number({
+            label: "Base",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -88,7 +98,8 @@ const createProductForm = (allSmells = [],
             widget: widgets.select(),
             choices: allBases
         }),
-        'oil': fields.number({
+        'oil_id': fields.number({
+            label: "Oil",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -97,7 +108,8 @@ const createProductForm = (allSmells = [],
             widget: widgets.select(),
             choices: allOils
         }),
-        'type': fields.number({
+        'type_id': fields.number({
+            label: "Type",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -106,7 +118,8 @@ const createProductForm = (allSmells = [],
             widget: widgets.select(),
             choices: allTypes
         }),
-        'purposes': fields.number({
+        'purposes': fields.string({
+            label: "Purposes",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -115,7 +128,8 @@ const createProductForm = (allSmells = [],
             widget: widgets.multipleSelect(),
             choices: allPurposes
         }),
-        'smells': fields.number({
+        'smells': fields.string({
+            label: "Smells",
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -123,6 +137,20 @@ const createProductForm = (allSmells = [],
             },
             widget: widgets.multipleSelect(),
             choices: allSmells
+        }),
+        'image_url': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+        }),
+        'thumbnail_url': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
         })
     })
 };

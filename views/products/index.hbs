@@ -17,6 +17,7 @@
         <th scope="col">Type</th>
         <th scope="col">Purpose</th>
         <th scope="col">Smell</th>
+        <th></th>
     </thead>
 
     <tbody>
@@ -32,15 +33,25 @@
             <td>{{this.base.base}}</td>
             <td>{{this.oil.oil}}</td>
             <td>{{this.type.type}}</td>
-            {{#each this.purposes}}
-            <td>{{this.purpose}}</td>
-            {{/each}}
+            <td>
+                {{#each this.purposes}}
+                <div class="span badge bg-success"> {{this.purpose}}</div>
+                {{/each}}
+            </td>
 
-            {{#each this.smells}}
-            <td>{{this.smell}}</td>
-            {{/each}}
+            <td>
+                {{#each this.smells}}
+                <div class="span badge bg-info">{{this.smell}}</div>
+                {{/each}}
+            </td>
 
-           
+            <td>
+                <a href="products/update/{{this.id}}" class="btn btn-success btn-sm" />Update</a>
+
+                <a href="products/delete/{{this.id}}" class="btn btn-danger btn-sm" />Remove</a>
+
+            </td>
+
         </tr>
 
 

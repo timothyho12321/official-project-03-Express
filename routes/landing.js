@@ -46,11 +46,11 @@ router.get('/', async (req, res) => {
         withRelated: ['order', 'variant']
     })
 
-    console.log(orderItem.toJSON());
-    res.json({ 'results': orderItem.toJSON() })
+    // console.log(orderItem.toJSON());
+    // res.json({ 'results': orderItem.toJSON() })
 
 
-    // res.render('landing/index')
+    res.render('landing/index')
 })
 
 
