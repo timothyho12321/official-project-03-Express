@@ -1,6 +1,11 @@
 const express = require("express");
 const hbs = require("hbs");
 const wax = require("wax-on");
+const session = require('express-session');
+const flash = require('connect-flash');
+const FileStore = require('session-file-store')(session);
+
+
 require("dotenv").config();
 
 // create an instance of express app
@@ -22,6 +27,15 @@ app.use(
         extended: false
     })
 );
+
+app.use(session({
+    store: new FileStore(),  // use files to store sessions
+    secret: 'keyboard cat',
+    resave: false, // if the client access the web server and there's no change to session data, don't resave the session
+    saveUninitialized: true // save a new session for each client that does not have a session 
+  }))
+
+
 
 const landingRoutes = require('./routes/landing')
 const productRoutes = require('./routes/products')
