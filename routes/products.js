@@ -1,5 +1,5 @@
 const express = require("express");
-const async = require("hbs/lib/async");
+
 const { createProductForm, bootstrapField, createSearchForm } = require("../forms");
 const { Account, Soap, Order, Base, Variant, CartItem, OrderItem, Type, Smell, Purpose, Oil } = require("../models");
 const router = express.Router();
@@ -18,120 +18,112 @@ router.get('/', async (req, res) => {
     const searchForm = createSearchForm(allSmells,
         allOils);
 
-    // const soapwithAll = await Soap.collection().fetch({
-    //     withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
-    // })
-
-    // console.log(soapwithAll.toJSON())
-
-    // res.json({ 'products': soapwithAll.toJSON() })
-
-
-    let q = Soap.collection();
+    const q = Soap.collection();
 
     searchForm.handle(req, {
-        'empty': async (form) => {
-            // console.log("The route ran into empty.")
-            let soapwithAll = await q.fetch({
+        'success': async function (form) {
+            
+
+            if (form.data.name) {
+                q.where('name', 'like', '%' + form.data.name + "%");
+            }
+
+
+            if (form.data.min_cost) {
+                q.where('cost', '>=', form.data.min_cost)
+
+            }
+
+            if (form.data.max_cost) {
+                q.where('cost', '<=', form.data.max_cost)
+
+            }
+
+
+            if (form.data.min_height) {
+                q.where('height', '>=', form.data.min_height)
+
+            }
+
+            if (form.data.max_height) {
+                q.where('height', '<=', form.data.max_height)
+
+            }
+
+            if (form.data.min_width) {
+                q.where('width', '>=', form.data.min_width)
+
+            }
+
+            if (form.data.max_width) {
+                q.where('width', '<=', form.data.max_width)
+
+            }
+
+
+            if (form.data.oil_id) {
+                q.where('oil_id', '=', form.data.oil_id)
+
+            }
+
+
+            if (form.data.smells) {
+                q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
+                    .where('smell_id', 'in', form.data.smells.split(','))
+
+
+            }
+
+            const products = await q.fetch({
                 withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
             })
 
-            console.log(soapwithAll.toJSON());
+            res.render(
+                'products/index',
+                {
+                    'products': products.toJSON(),
+                    'form': form.toHTML(bootstrapField)
+                })
 
 
-            // res.json({ 'products': soapwithAll.toJSON() })
-            
-
-            res.render('products/index', {
-                'products': soapwithAll.toJSON(),
-                'form': form.toHTML(bootstrapField)
+        },
+        'empty': async function (form) {
+            const products = await q.fetch({
+                withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
             })
 
-            // res.render('products/index', {
-            //     'products': soapwithAll.toJSON(),
-            //     'form': form.toHTML(bootstrapField)
-            // })
+            
+            res.render(
+                'products/index',
+                {
+                    'products': products.toJSON(),
+                    'form': form.toHTML(bootstrapField)
+                })
+
+
         },
-        'error': async (form) => {
-            // let titles = await q.fetch({
-            //     withRelated: ['media_property', 'tags']
-            // })
+        'error': async function (form) {
+            const products = await q.fetch({
+                withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
+            })
 
-            // res.render('titles/index', {
-            //     'titles': titles.toJSON(),
-            //     'form': form.toHTML(bootstrapField)
-            // })
-        },
-        'success': async (form) => {
+            console.log(products.toJSON())
 
-            // if (form.data.title) {
-            //     q.where('title', 'like', '%' + form.data.title + "%");
-            // }
-
-
-            // if (form.data.min_cost) {
-            //     q.where('cost', '>=', form.data.min_cost)
-
-            // }
-
-            // if (form.data.max_cost) {
-            //     q.where('cost', '<=', form.data.max_cost)
-
-            // }
-
-
-            // if (form.data.min_height) {
-            //     q.where('height', '>=', form.data.min_height)
-
-            // }
-
-            // if (form.data.max_height) {
-            //     q.where('height', '<=', form.data.max_height)
-
-            // }
-
-            // if (form.data.min_width) {
-            //     q.where('width', '>=', form.data.min_width)
-
-            // }
-
-            // if (form.data.max_width) {
-            //     q.where('width', '<=', form.data.max_width)
-
-            // }
-
-
-            // if (form.data.tags_id) {
-            //     // ...JOIN products_tags ON products.id = products_tags.product_id
-            //     q.query('join', 'titles_tags', 'titles.id', 'title_id')
-            //         .where('tag_id', 'in', form.data.tags_id.split(','))
-            // }
-
-
-            // const titles = await dataLayer.getAllTitles(q);
-
-            // // const titles = await q.fetch({
-            // //     withRelated: ['tags', 'media_property'] // for each product, load in each of the tag
-            // // });
-
-            // console.log(titles.toJSON())
-
-            // res.render('titles/index', {
-            //     'titles': titles.toJSON(),
-            //     'form': form.toHTML(bootstrapField)
-            // })
+            res.render(
+                'products/index',
+                {
+                    'products': products.toJSON(),
+                    'form': form.toHTML(bootstrapField)
+                })
         }
 
     })
 
 
 
-    // res.render(
-    //     'products/index',
-    //     {
-    //         'products': soapwithAll.toJSON(),
-    //         'form': searchForm.toHTML(bootstrapField)
-    //     })
+
+
+
 
 })
 

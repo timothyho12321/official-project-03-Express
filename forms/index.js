@@ -303,33 +303,62 @@ const createSearchForm = (allSmells = [],
                 label: ['form-label']
             }
         }),
-        'cost': fields.number({
-            label: "Cost",
+        'min_cost': fields.number({
+            label: "Min Cost",
             required: false,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            // validators: [validators.integer(), validators.min(0)]
+            validators: [validators.integer(), validators.min(0)]
         }),
-        'width': fields.number({
-            label: "Width",
+        'max_cost': fields.number({
+            label: "Max Cost",
             required: false,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            // validators: [validators.integer(), validators.min(0)]
+            validators: [validators.integer(), validators.min(0)]
+        }),
+        'min_width': fields.number({
+            label: "Min Width",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer(), validators.min(0)]
 
         }),
-        'height': fields.number({
-            label: "Height",
+        'max_width': fields.number({
+            label: "Max Width",
             required: false,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            // validators: [validators.integer(), validators.min(0)]
+            validators: [validators.integer(), validators.min(0)]
+
+        }),
+        'min_height': fields.number({
+            label: "Min Height",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer(), validators.min(0)]
+
+        }),
+        'max_height': fields.number({
+            label: "Max Height",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer(), validators.min(0)]
 
         }),
         'shape': fields.string({
@@ -348,7 +377,7 @@ const createSearchForm = (allSmells = [],
                 label: ['form-label']
             },
             widget: widgets.select(),
-            choices: allOils
+            choices: allOils,
         }),
         'smells': fields.string({
             label: "Smells",
