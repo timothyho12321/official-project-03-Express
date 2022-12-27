@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 
     searchForm.handle(req, {
         'success': async function (form) {
-            
+
 
             if (form.data.name) {
                 q.where('name', 'like', '%' + form.data.name + "%");
@@ -92,7 +92,7 @@ router.get('/', async (req, res) => {
                 withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
             })
 
-            
+
             res.render(
                 'products/index',
                 {
@@ -304,7 +304,7 @@ router.get("/update/:soap_id", async function (req, res) {
 router.post("/update/:soap_id", async function (req, res) {
 
     const soapId = req.params.soap_id;
-
+    
     const findSoap = await Soap.where({
         'id': soapId
     }).fetch({
@@ -335,14 +335,16 @@ router.post("/update/:soap_id", async function (req, res) {
 
 
             let { purposes, smells, ...otherData } = form.data;
+
+            console.log("otherdata", otherData)
             findSoap.set(otherData);
             await findSoap.save();
 
             let oldSmells = await findSoap.related('smells').pluck('id')
-            console.log(oldSmells);
+            // console.log(oldSmells);
 
             let oldPurposes = await findSoap.related('purposes').pluck('id')
-            console.log(oldPurposes);
+            // console.log(oldPurposes);
 
             await findSoap.smells().detach(oldSmells);
             await findSoap.smells().attach(smells.split(","))
@@ -351,7 +353,7 @@ router.post("/update/:soap_id", async function (req, res) {
             await findSoap.purposes().detach(oldPurposes);
             await findSoap.purposes().attach(purposes.split(","))
 
-
+            // res.send("send message to check if product route is the issue")
             res.redirect('/products')
         },
         'empty': async function (form) {
