@@ -289,8 +289,81 @@ const createLoginForm = () => {
         })
     })
 
-
 }
+
+
+const createSearchForm = (allSmells = [],
+    allOils = []) => {
+    return forms.create({
+        'name': fields.string({
+            label: "Name",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'cost': fields.number({
+            label: "Cost",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            // validators: [validators.integer(), validators.min(0)]
+        }),
+        'width': fields.number({
+            label: "Width",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            // validators: [validators.integer(), validators.min(0)]
+
+        }),
+        'height': fields.number({
+            label: "Height",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            // validators: [validators.integer(), validators.min(0)]
+
+        }),
+        'shape': fields.string({
+            label: "Shape",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'oil_id': fields.number({
+            label: "Oil",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: allOils
+        }),
+        'smells': fields.string({
+            label: "Smells",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: allSmells
+        })
+
+    })
+};
+
 
 
 
@@ -298,5 +371,6 @@ module.exports = {
     bootstrapField,
     createProductForm,
     createRegisterForm,
-    createLoginForm
+    createLoginForm,
+    createSearchForm
 }
