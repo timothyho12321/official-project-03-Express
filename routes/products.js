@@ -50,6 +50,10 @@ router.get('/create', async (req, res) => {
 
     res.render('products/create', {
         'form': productForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+
     })
 
 
@@ -101,9 +105,10 @@ router.post('/create', async (req, res) => {
         },
         'empty': async function (form) {
 
-            
+
             res.render('products/create', {
                 'form': form.toHTML(bootstrapField),
+               
             })
         },
         'error': async function (form) {

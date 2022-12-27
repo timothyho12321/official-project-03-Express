@@ -139,11 +139,12 @@ const createProductForm = (allSmells = [],
             choices: allSmells
         }),
         'image_url': fields.string({
-            required: false,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            },
+            // required: false,
+            // errorAfterField: true,
+            // cssClasses: {
+            //     label: ['form-label']
+            // },
+            widget: widgets.hidden()
         }),
         'thumbnail_url': fields.string({
             required: false,
@@ -151,6 +152,7 @@ const createProductForm = (allSmells = [],
             cssClasses: {
                 label: ['form-label']
             },
+            widget: widgets.hidden()
         })
     })
 };
