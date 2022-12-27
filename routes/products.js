@@ -95,10 +95,13 @@ router.post('/create', async (req, res) => {
                 await productObject.smells().attach(smells.split(","))
             }
 
+            req.flash("success_messages", `New Item ${productObject.get('name')} has been created`)
 
             res.redirect('/products')
         },
         'empty': async function (form) {
+
+            
             res.render('products/create', {
                 'form': form.toHTML(bootstrapField),
             })

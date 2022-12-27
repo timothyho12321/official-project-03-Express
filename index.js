@@ -36,16 +36,25 @@ app.use(session({
   }))
 
 
+  app.use(flash())
+// Register Flash messages
+app.use(function(req, res, next){
+  res.locals.success_messages = req.flash("success_messages")
+  res.locals.error_messages = req.flash("error_messages")
+  next()
+})
+
 
 const landingRoutes = require('./routes/landing')
 const productRoutes = require('./routes/products')
-
+const accountRoutes = require('./routes/accounts')
 
 async function main() {
 
 
     app.use('/', landingRoutes);
-    app.use('/products', productRoutes)
+    app.use('/products', productRoutes);
+    app.use('/accounts', accountRoutes)
 
 }
 

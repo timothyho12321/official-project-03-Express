@@ -26,9 +26,9 @@ var bootstrapField = function (name, object) {
 };
 
 
-const createProductForm = (allSmells = [], 
-    allPurposes = [],allBases=[], allOils = [],
-    allTypes=[]) => {
+const createProductForm = (allSmells = [],
+    allPurposes = [], allBases = [], allOils = [],
+    allTypes = []) => {
     return forms.create({
         'name': fields.string({
             required: true,
@@ -43,7 +43,7 @@ const createProductForm = (allSmells = [],
             cssClasses: {
                 label: ['form-label']
             },
-            validators: [validators.integer(),validators.min(0)]
+            validators: [validators.integer(), validators.min(0)]
         }),
         'width': fields.number({
             required: true,
@@ -51,8 +51,8 @@ const createProductForm = (allSmells = [],
             cssClasses: {
                 label: ['form-label']
             },
-            validators: [validators.integer(),validators.min(0)]
-        
+            validators: [validators.integer(), validators.min(0)]
+
         }),
         'height': fields.number({
             required: true,
@@ -60,8 +60,8 @@ const createProductForm = (allSmells = [],
             cssClasses: {
                 label: ['form-label']
             },
-            validators: [validators.integer(),validators.min(0)]
-        
+            validators: [validators.integer(), validators.min(0)]
+
         }),
         'shape': fields.string({
             required: true,
@@ -77,7 +77,7 @@ const createProductForm = (allSmells = [],
             cssClasses: {
                 label: ['form-label']
             },
-            widget:widgets.date() 
+            widget: widgets.date()
         }),
         'last_updated': fields.date({
             label: "Last Updated",
@@ -86,7 +86,7 @@ const createProductForm = (allSmells = [],
             cssClasses: {
                 label: ['form-label']
             },
-            widget:widgets.date() 
+            widget: widgets.date()
         }),
         'base_id': fields.number({
             label: "Base",
@@ -155,7 +155,146 @@ const createProductForm = (allSmells = [],
     })
 };
 
+
+
+const createRegisterForm = () => {
+    return forms.create({
+        'first_name': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'last_name': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'contact_number': fields.number({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer(), validators.min(8)]
+
+        }),
+        'email': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.email()]
+        }),
+        'password': fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'confirm_password': fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.matchField('password')]
+        }),
+        'created_date': fields.date({
+            label: "Created Date",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.date()
+        }),
+        'modified_date': fields.date({
+            label: "Modified Date",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.date()
+        }),
+        'shipping_country': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'shipping_address_1': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'shipping_address_2': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'shipping_postal_code': fields.number({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer()]
+
+        }),
+        'role_id': fields.number({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer()]
+
+        }),
+    })
+}
+
+
+const createLoginForm = () => {
+    return forms.create({
+        'email': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.email()]
+
+        })
+        ,
+        'password': fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        })
+    })
+
+
+}
+
+
+
 module.exports = {
     bootstrapField,
-    createProductForm
+    createProductForm,
+    createRegisterForm,
+    createLoginForm
 }
