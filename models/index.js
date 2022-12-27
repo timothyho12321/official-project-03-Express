@@ -5,35 +5,44 @@ const bookshelf = require('../bookshelf')
 
 const Base = bookshelf.model('Base', {
     tableName: 'bases',
-    soaps(){
+    soaps() {
         return this.hasMany('Soap', 'base_id')
     }
 });
 
 const Oil = bookshelf.model('Oil', {
     tableName: 'oils',
-    soaps(){
+    soaps() {
         return this.hasMany('Soap')
     }
 });
 
 const Type = bookshelf.model('Type', {
     tableName: 'types',
-    soaps(){
+    soaps() {
         return this.hasMany('Soap')
     }
 });
 
 const Purpose = bookshelf.model('Purpose', {
     tableName: 'purposes',
+    soaps() {
+        return this.belongsToMany('Soap')
+    }
 });
 
 const Smell = bookshelf.model('Smell', {
     tableName: 'smells',
+    soaps() {
+        return this.belongsToMany('Soap')
+    }
 });
 
 const Color = bookshelf.model('Color', {
     tableName: 'colors',
+    variant() {
+        return this.hasMany('Variant')
+    }
 });
 
 const Role = bookshelf.model('Role', {
@@ -45,7 +54,7 @@ const Role = bookshelf.model('Role', {
 
 const OrderStatus = bookshelf.model('OrderStatus', {
     tableName: 'order_statuses',
-    orders(){
+    orders() {
         return this.hasMany('Order')
     }
 });
@@ -76,6 +85,16 @@ const Order = bookshelf.model('Order', {
 });
 
 
+const Variant = bookshelf.model('Variant', {
+    tableName: 'variants',
+    color() {
+        return this.belongsTo('Color')
+    },
+    soap() {
+        return this.belongsTo('Soap')
+    }
+});
+
 const Soap = bookshelf.model('Soap', {
     tableName: 'soaps',
     base() {
@@ -86,6 +105,35 @@ const Soap = bookshelf.model('Soap', {
     },
     type() {
         return this.belongsTo('Type')
+    },
+    purposes() {
+        return this.belongsToMany('Purpose')
+    },
+    smells() {
+        return this.belongsToMany('Smell')
+    },
+    variant() {
+        return this.hasMany('Variant')
+    }
+});
+
+const CartItem = bookshelf.model('CartItem', {
+    tableName: 'cart_items',
+    account() {
+        return this.belongsTo('Account')
+    },
+    variant() {
+        return this.belongsTo('Variant')
+    }
+});
+
+const OrderItem = bookshelf.model('OrderItem', {
+    tableName: 'order_items',
+    order() {
+        return this.belongsTo('Order')
+    },
+    variant() {
+        return this.belongsTo('Variant')
     }
 });
 
@@ -103,5 +151,8 @@ module.exports =
     BlackListedToken,
     Account,
     Order,
-    Soap
+    Soap,
+    Variant,
+    CartItem,
+    OrderItem
 };

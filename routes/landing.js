@@ -1,5 +1,5 @@
 const express = require("express");
-const { Account, Soap, Order, Base } = require("../models");
+const { Account, Soap, Order, Base, Variant, CartItem, OrderItem } = require("../models");
 const router = express.Router();
 
 
@@ -11,61 +11,46 @@ router.get('/', async (req, res) => {
     // })
 
 
-    // NEED TO DEBUG WHY DOES NOT RETURN WITH RELATED BASE RESULT 
-    // const soap = await Soap.collection().fetch({
-    //     withRelated: ['oil', 'type', 'base']
-    // })
-    let soap;
-    try {
-        soap = await Soap.collection().fetch({
-            withRelated: ['base', 'oil', 'type']
-        })
-    }
-    catch (e) {
+    // let converted = soap.toJSON()
 
-        console.log(e)
-    }
+    // console.log("Soap.id", converted[0].id);
+
+    // console.log("Soap.id", converted[0].oil);
+
+    // console.log("Base", converted[0].base);
 
 
-    //  new Soap({ id: 4 }).fetch({ debug: true, withRelated: ['oil'] }).then(soap => {
-    //     // ...
-    //     console.log(soap.related('oil').toJSON())
-    // })
-
-    // new Soap({ id: 4 }).fetch({ debug: true, withRelated: ['type'] }).then(soap => {
-    //     // ...
-    //     console.log(soap.related('type').toJSON())
-    // })
-
-    // new Soap({ id: 4 }).fetch({ debug: true, withRelated: ['base'] }).then(soap => {
-    //     // ...
-    //     console.log(soap.related('base').toJSON())
-    // })
-
-    let converted = soap.toJSON()
-
-    console.log("Soap.id", converted[0].id);
-
-    console.log("Soap.id", converted[0].oil);
-
-    // base undefined 
-    console.log("Base", converted[0].base);
-
-    // console.log(soap.toJSON());
-    res.json({ 'results': soap.toJSON() })
-
-
-
-
-
-    // const order = await Order.collection().fetch({
-    //     withRelated: ['account', 'order_status']
-    // })
+    const order = await Order.collection().fetch({
+        withRelated: ['account', 'order_status']
+    })
 
     // console.log(order.toJSON());
-    // res.json({'results':order.toJSON()})
+    // res.json({ 'results': order.toJSON() })
 
-    // res.render('landing/index')
+
+    const soapwithAll = await Soap.collection().fetch({
+        withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
+    })
+
+    
+    const variant = await Variant.collection().fetch({
+        withRelated: ['color', 'soap']
+    })
+
+
+    const cartItem = await CartItem.collection().fetch({
+        withRelated: ['account', 'variant']
+    })
+
+    const orderItem = await OrderItem.collection().fetch({
+        withRelated: ['order', 'variant']
+    })
+
+    // console.log(orderItem.toJSON());
+    // res.json({ 'results': orderItem.toJSON() })
+
+
+    res.render('landing/index')
 })
 
 
