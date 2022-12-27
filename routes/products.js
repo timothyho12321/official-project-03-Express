@@ -108,12 +108,13 @@ router.post('/create', async (req, res) => {
 
             res.render('products/create', {
                 'form': form.toHTML(bootstrapField),
-               
+
             })
         },
         'error': async function (form) {
             res.render('products/create', {
                 'form': form.toHTML(bootstrapField),
+
             })
 
         }
@@ -186,8 +187,11 @@ router.get("/update/:soap_id", async function (req, res) {
 
 
     res.render('products/update', {
-        'form': productForm.toHTML(bootstrapField)
-
+        'form': productForm.toHTML(bootstrapField),
+        'soap': findSoap.toJSON(),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
     });
 
 
