@@ -1,8 +1,17 @@
 const express = require("express");
+const router = express.Router()
+
+const crypto = require('crypto')
 const { createRegisterForm, bootstrapField, createLoginForm } = require("../forms");
 const { Account } = require("../models");
 
-const router = express.Router();
+
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256');
+    // The output will be converted to hexdecimal
+    const hash = sha256.update(password).digest('base64');
+    return hash;
+}
 
 
 router.get('/register', (req, res) => {
@@ -27,7 +36,8 @@ router.post('/register', (req, res) => {
 
             const { confirm_password, ...otherData } = form.data
 
-            // userData.password = getHashedPassword(userData.password)
+            otherData.password = getHashedPassword(otherData.password)
+            console.log(otherData);
             account.set(otherData)
 
             await account.save();
@@ -87,8 +97,9 @@ router.post('/login', (req, res) => {
                 res.redirect('/accounts/login')
             } else {
                 
-                if (accountLogin.get('password') === (form.data.password)) {
+                if (accountLogin.get('password') === getHashedPassword(form.data.password)) {
 
+                   
                     req.session.user = {
                         id: accountLogin.get('id'),
                         firstName: accountLogin.get('first_name'),
@@ -98,7 +109,8 @@ router.post('/login', (req, res) => {
                     }
 
                     req.flash("success_messages", `Welcome again, ${accountLogin.get("first_name")} ${accountLogin.get("last_name")}`)
-                    res.redirect('/accounts/register');
+                    
+                    res.redirect('/accounts/profile');
 
                 } else {
                     req.flash("error_messages", "Unfortunately, you keyed in wrong login. Please enter back the details you registered the account with.")
@@ -125,6 +137,15 @@ router.post('/login', (req, res) => {
         }
 
     })
+
+
+})
+
+
+
+router.get('/profile', (req, res) => {
+
+    res.render('accounts/profile')
 
 
 })

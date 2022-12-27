@@ -44,6 +44,14 @@ app.use(function(req, res, next){
   next()
 })
 
+// Enable sessions to share the data of user with the hbs files using global middleware
+app.use(function (req, res, next) {
+    res.locals.user = req.session.user;
+    next();
+  
+  })
+  
+
 
 const landingRoutes = require('./routes/landing')
 const productRoutes = require('./routes/products')
