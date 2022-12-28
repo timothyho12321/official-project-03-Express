@@ -3,7 +3,7 @@ const dataLayer = require("../dal/products");
 
 
 const { createProductForm, bootstrapField, createSearchForm, createVariantForm } = require("../forms");
-const { Account, Soap, Order, Base, Variant, CartItem, OrderItem, Type, Smell, Purpose, Oil } = require("../models");
+const { Account, Soap, Order, Base, Variant, CartItem, OrderItem, Type, Smell, Purpose, Oil, Color } = require("../models");
 const router = express.Router();
 
 
@@ -80,8 +80,6 @@ router.get('/', async (req, res) => {
                     'products': products.toJSON(),
                     'form': form.toHTML(bootstrapField)
                 })
-
-
         },
         'empty': async function (form) {
             const products = await q.fetch({
@@ -328,6 +326,8 @@ router.post("/update/:soap_id", async function (req, res) {
             let oldPurposes = await findSoap.related('purposes').pluck('id')
             // console.log(oldPurposes);
 
+
+            //DOES THIS LEAD TO THE DEADLOCK FOUND ERROR?
             await findSoap.smells().detach(oldSmells);
             await findSoap.smells().attach(smells.split(","))
 
@@ -419,9 +419,9 @@ router.get('/:soap_id/variants', async (req, res) => {
         require: false
     })
 
-//     let a = variants.toJSON();
-    console.log("variant details",variants.toJSON());
-// console.log("Variant name",a[0].name)
+    //     let a = variants.toJSON();
+    console.log("variant details", variants.toJSON());
+    // console.log("Variant name",a[0].name)
 
 
     const soap = await Soap.where({
@@ -432,7 +432,7 @@ router.get('/:soap_id/variants', async (req, res) => {
     })
 
 
-    res.render("variants/index" , {
+    res.render("variants/index", {
         'soap': soap.toJSON(),
         'variants': variants.toJSON()
     })
@@ -444,11 +444,20 @@ router.get('/:soap_id/variants', async (req, res) => {
 //////////////////////////////////// START OF CREATE ROUTE ////////////////
 
 
-router.get("/:product_id/variants/create", async (req , res) => {
-    
-    const variantForm = createVariantForm();
+router.get("/:product_id/variants/create", async (req, res) => {
 
-    res.render("variants/create" , {
+
+
+    const allColors = await Color.fetchAll().map(s =>
+        [s.get("id"), s.get("color")])
+
+
+    console.log("color options", allColors);
+
+    const variantForm = createVariantForm(allColors);
+
+
+    res.render("variants/create", {
         form: variantForm.toHTML(bootstrapField),
         cloudinaryName: process.env.CLOUDINARY_NAME,
         cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
@@ -456,10 +465,14 @@ router.get("/:product_id/variants/create", async (req , res) => {
     })
 })
 
-router.post("/:soap_id/variants/create" , async (req , res) => {
+router.post("/:soap_id/variants/create", async (req, res) => {
     let soapId = req.params.soap_id
-  
-    
+
+    const allColors = await Color.fetchAll().map(s =>
+        [s.get("id"), s.get("color")])
+
+    console.log("color options", allColors);
+
     const soap = await Soap.where({
         'id': soapId
     }).fetch({
@@ -468,38 +481,37 @@ router.post("/:soap_id/variants/create" , async (req , res) => {
     })
 
 
-    const variantForm = createVariantForm();
-    variantForm.handle(req , {
-        'success': async function(form){
-           
+    const variantForm = createVariantForm(allColors);
+    variantForm.handle(req, {
+        'success': async function (form) {
+
             const variantObject = new Variant();
 
-            // let { color_id, ...otherData } = form.data;
-            // variantObject.set(otherData);
             let newObject = form.data
             newObject.soap_id = soapId
-            console.log(newObject);
-            
-            variantObject.set(form.data);
+            // console.log("new object",newObject);
+
+            variantObject.set(newObject);
             await variantObject.save();
 
-            req.flash("success_messages" , `Variant for the ${variantObject.get('name')} has been added`)
+            req.flash("success_messages", `Variant for the ${variantObject.get('name')} has been added`)
+
             res.redirect(`/products/${soapId}/variants`)
         },
-        'error': function(form){
+        'error': function (form) {
 
 
-            res.render('variants/create' , {
+            res.render(`variants/${soapId}/create`, {
                 'form': form.toHTML(bootstrapField),
                 cloudinaryName: process.env.CLOUDINARY_NAME,
                 cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
                 cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
         },
-        'empty': function(form){
+        'empty': function (form) {
 
 
-            res.render('variants/create' , {
+            res.render(`variants/${soapId}/create`, {
                 'form': form.toHTML(bootstrapField),
                 cloudinaryName: process.env.CLOUDINARY_NAME,
                 cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
@@ -507,6 +519,181 @@ router.post("/:soap_id/variants/create" , async (req , res) => {
             })
         }
     })
+})
+
+//////////////////////////////////// END OF CREATE FOR VARIANT ////////////////
+
+//////////////////////////////////// START OF UPDATE FOR VARIANT ////////////////
+
+
+router.get("/:soap_id/variants/:variant_id/update", async (req, res) => {
+
+    const variantId = req.params.variant_id;
+    const soapId = req.params.soap_id;
+    const allColors = await Color.fetchAll().map(s =>
+        [s.get("id"), s.get("color")])
+
+
+    // console.log("color options", allColors);
+
+    const variantForm = createVariantForm(allColors);
+
+    const findVariant = await Variant.where({
+        'id': variantId
+    }).fetch({
+        withRelated: ['soap', 'color'],
+        require: true
+    })
+
+    // console.log(findVariant.toJSON());
+    variantForm.fields.name.value = findVariant.get('name');
+    variantForm.fields.stock.value = findVariant.get('stock');
+    variantForm.fields.last_updated.value = findVariant.get('last_updated');
+    variantForm.fields.color_id.value = findVariant.get('color_id');
+    variantForm.fields.image_url.value = findVariant.get('image_url');
+    variantForm.fields.thumbnail_url.value = findVariant.get('thumbnail_url');
+
+    // `${productId}/variants/${productId}/update`
+    res.render("variants/update", {
+        form: variantForm.toHTML(bootstrapField),
+        variant: findVariant.toJSON(),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+    })
+})
+
+
+
+router.post("/:soap_id/variants/:variant_id/update", async function (req, res) {
+
+    const variantId = req.params.variant_id;
+    const soapId = req.params.soap_id;
+    const allColors = await Color.fetchAll().map(s =>
+        [s.get("id"), s.get("color")])
+
+
+    // console.log("color options", allColors);
+
+    const variantForm = createVariantForm(allColors);
+
+    const findVariant = await Variant.where({
+        'id': variantId
+    }).fetch({
+        withRelated: ['soap', 'color'],
+        require: true
+    })
+
+
+    variantForm.handle(req, {
+        'success': async function (form) {
+
+            const variantObject = new Variant();
+
+            let newObject = form.data
+            newObject.soap_id = soapId
+            // console.log("new object",newObject);
+
+            variantObject.set(newObject);
+            await variantObject.save();
+
+            req.flash("success_messages", `Variant for the ${variantObject.get('name')} is updated.`)
+
+            res.redirect(`/products/${soapId}/variants`)
+        },
+        'error': function (form) {
+
+
+            res.render(`variants/${soapId}/create`, {
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        },
+        'empty': function (form) {
+
+
+            res.render(`variants/${soapId}/create`, {
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        }
+    })
+
+})
+
+//////////////////////////////////// END OF UPDATE FOR VARIANT ////////////////
+
+//////////////////////////////////// START OF DELETE FOR VARIANT ////////////////
+
+
+
+router.get('/:soap_id/variants/:variant_id/delete', async function (req, res) {
+    const variantId = req.params.variant_id;
+    const soapId = req.params.soap_id
+
+    const findVariant = await Variant.where({
+        'id': variantId
+    }).fetch({
+        withRelated: ['soap', 'color'],
+        require: true
+    })
+
+    res.render('variants/delete', {
+        'variant': findVariant.toJSON(),
+        
+    })
+
+
+})
+
+
+router.post('/:soap_id/variants/:variant_id/delete', async function (req, res) {
+
+    const soapId = req.params.soap_id;
+    const variantId = req.params.variant_id;
+
+    const findVariant = await Variant.where({
+        'id': variantId
+    }).fetch({
+        withRelated: ['soap', 'color'],
+        require: true
+    })
+
+    const vNameForEnd = findVariant.toJSON();
+    console.log(vNameForEnd);
+
+    const soap = await Soap.where({
+        'id': soapId
+    }).fetch({
+        withRelated: ['base', 'oil', 'type', 'purposes', 'smells'],
+        require: true
+    })
+
+
+    let deleteHappen = false;
+    if (findVariant) {
+        deleteHappen = true;
+    }
+
+await findVariant.destroy();
+
+
+if (deleteHappen) {
+    req.flash('success_messages' , `The variant ${vNameForEnd.name} was
+     deleted from '${soap.get('name')}'.`)
+    res.redirect(`/products/${soapId}/variants`);
+
+} else {
+    req.flash('error_messages' , `Deletion failed for variant ${findVariant.get('name')} 
+    in '${soap.get('name')}'. Please check again.`)
+    res.redirect(`/products/${soapId}/variants`);
+}
+    
+
 })
 
 

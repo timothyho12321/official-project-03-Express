@@ -426,7 +426,9 @@ const createVariantForm = (allColors = []) => {
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget: widgets.select(),
+            choices: allColors
         }),
         'image_url': fields.string({
             required: false,

@@ -5,7 +5,7 @@
 {{#block 'content'}}
 
 
-<h1>Original Product: {{this.name}}</h1>
+<h1>Original Product: {{soap.name}}</h1>
 
 <div class="table-container" style="overflow-x: scroll; background-color:#F5F5DC">
     <table class="table">
@@ -21,10 +21,10 @@
         </thead>
 
         <tbody>
-           
+
             <tr>
                 <td>{{soap.name}}</td>
-                <td><img src="{{this.thumbnail_url}}" /></td>
+                <td><img src="{{soap.thumbnail_url}}" /></td>
                 <td>{{soap.cost}}</td>
                 <td>{{soap.shape}}</td>
                 <td>{{soap.date_created}}</td>
@@ -40,7 +40,7 @@
                     {{/each}}
                 </td>
             </tr>
-            
+
 
         </tbody>
     </table>
@@ -61,10 +61,11 @@
             <th scope="col">Stock</th>
             <th scope="col">Last Updated</th>
             <th scope="col">Color</th>
+            <th scope="col">Changes</th>
         </thead>
 
         <tbody>
-           {{#each variants}}
+            {{#each variants}}
             <tr>
                 <td>{{this.name}}</td>
                 <td><img src="{{this.thumbnail_url}}" /></td>
@@ -75,6 +76,11 @@
                 {{!-- <td>{{date this.last_updated}}</td> --}}
                 {{!-- <td>/{{moment this.last_updated format = "ddd, DD MMM YYYY"}}</td> --}}
                 <td>{{this.color.color}}</td>
+                <td>
+                    <a href="variants/{{this.id}}/update" class="btn btn-success btn-sm" />Update</a>
+                    <a href="variants/{{this.id}}/delete" class="btn btn-danger btn-sm" />Delete</a>
+
+                </td>
             </tr>
             {{/each}}
 
@@ -83,9 +89,7 @@
 
 </div>
 
-
-<a href="/products/{this.id}/variants/create" value="Add2"/>
-<button class="btn btn-primary">Add New Variant.</button>
+<a href="variants/create" class="btn btn-primary mt-2">Add variant to '{{soap.name}}'</a>
 {{/block}}
 
 {{/extends}}
