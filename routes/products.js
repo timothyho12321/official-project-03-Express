@@ -1,4 +1,6 @@
 const express = require("express");
+const dataLayer = require("../dal/products");
+
 
 const { createProductForm, bootstrapField, createSearchForm } = require("../forms");
 const { Account, Soap, Order, Base, Variant, CartItem, OrderItem, Type, Smell, Purpose, Oil } = require("../models");
@@ -7,11 +9,11 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
 
-    const allOils = await Oil.fetchAll().map(o =>
-        [o.get('id'), o.get('oil')])
+    const allOils = await dataLayer.getAllOils();
 
-    const allSmells = await Smell.fetchAll().map(s =>
-        [s.get('id'), s.get('smell')])
+
+    const allSmells = await dataLayer.getAllSmells();
+
 
     allOils.unshift([0, '---------------']);
 
@@ -131,20 +133,15 @@ router.get('/', async (req, res) => {
 ///////////////////////////////////// Create Route /////////////////////////////////
 router.get('/create', async (req, res) => {
 
-    const allSmells = await Smell.fetchAll().map(s =>
-        [s.get('id'), s.get('smell')])
+    const allSmells = await dataLayer.getAllSmells();
 
-    const allPurposes = await Purpose.fetchAll().map(p =>
-        [p.get('id'), p.get('purpose')])
+    const allPurposes = await dataLayer.getAllPurposes();
 
-    const allBases = await Base.fetchAll().map(b =>
-        [b.get('id'), b.get('base')])
+    const allBases = await dataLayer.getAllBases();
 
-    const allOils = await Oil.fetchAll().map(o =>
-        [o.get('id'), o.get('oil')])
+    const allOils = await dataLayer.getAllOils();
 
-    const allTypes = await Type.fetchAll().map(t =>
-        [t.get('id'), t.get('type')])
+    const allTypes = await dataLayer.getAllTypes();
 
 
     const productForm = createProductForm(allSmells,
@@ -164,20 +161,17 @@ router.get('/create', async (req, res) => {
 
 router.post('/create', async (req, res) => {
 
-    const allSmells = await Smell.fetchAll().map(s =>
-        [s.get('id'), s.get('smell')])
+    const allSmells = await dataLayer.getAllSmells();
 
-    const allPurposes = await Purpose.fetchAll().map(p =>
-        [p.get('id'), p.get('purpose')])
+    const allPurposes = await dataLayer.getAllPurposes();
 
-    const allBases = await Base.fetchAll().map(b =>
-        [b.get('id'), b.get('base')])
+    const allBases = await dataLayer.getAllBases();
 
-    const allOils = await Oil.fetchAll().map(o =>
-        [o.get('id'), o.get('oil')])
 
-    const allTypes = await Type.fetchAll().map(t =>
-        [t.get('id'), t.get('type')])
+    const allOils = await dataLayer.getAllOils();
+
+    const allTypes = await dataLayer.getAllTypes();
+
 
     const productForm = createProductForm(allSmells,
         allPurposes, allBases, allOils, allTypes);
@@ -243,20 +237,17 @@ router.get("/update/:soap_id", async function (req, res) {
     // console.log(findSoap);
 
 
-    const allSmells = await Smell.fetchAll().map(s =>
-        [s.get('id'), s.get('smell')])
+    const allSmells = await dataLayer.getAllSmells();
 
-    const allPurposes = await Purpose.fetchAll().map(p =>
-        [p.get('id'), p.get('purpose')])
+    const allPurposes = await dataLayer.getAllPurposes();
 
-    const allBases = await Base.fetchAll().map(b =>
-        [b.get('id'), b.get('base')])
+    const allBases = await dataLayer.getAllBases();
 
-    const allOils = await Oil.fetchAll().map(o =>
-        [o.get('id'), o.get('oil')])
 
-    const allTypes = await Type.fetchAll().map(t =>
-        [t.get('id'), t.get('type')])
+    const allOils = await dataLayer.getAllOils();
+
+    const allTypes = await dataLayer.getAllTypes();
+
 
     const productForm = createProductForm(allSmells,
         allPurposes, allBases, allOils, allTypes);
@@ -304,7 +295,7 @@ router.get("/update/:soap_id", async function (req, res) {
 router.post("/update/:soap_id", async function (req, res) {
 
     const soapId = req.params.soap_id;
-    
+
     const findSoap = await Soap.where({
         'id': soapId
     }).fetch({
@@ -312,20 +303,17 @@ router.post("/update/:soap_id", async function (req, res) {
         withRelated: ['smells', 'purposes']
     })
 
-    const allSmells = await Smell.fetchAll().map(s =>
-        [s.get('id'), s.get('smell')])
+    const allSmells = await dataLayer.getAllSmells();
 
-    const allPurposes = await Purpose.fetchAll().map(p =>
-        [p.get('id'), p.get('purpose')])
+    const allPurposes = await dataLayer.getAllPurposes();
 
-    const allBases = await Base.fetchAll().map(b =>
-        [b.get('id'), b.get('base')])
+    const allBases = await dataLayer.getAllBases();
 
-    const allOils = await Oil.fetchAll().map(o =>
-        [o.get('id'), o.get('oil')])
 
-    const allTypes = await Type.fetchAll().map(t =>
-        [t.get('id'), t.get('type')])
+    const allOils = await dataLayer.getAllOils();
+
+    const allTypes = await dataLayer.getAllTypes();
+
 
     const productForm = createProductForm(allSmells,
         allPurposes, allBases, allOils, allTypes);
