@@ -36,6 +36,7 @@
     <table class="table">
         <thead>
             <th scope="col">Name</th>
+            <th scope="col">Image</th>
             <th scope="col">Cost</th>
             <th scope="col">Width</th>
             <th scope="col">Height</th>
@@ -54,6 +55,7 @@
             {{#each products}}
             <tr>
                 <td>{{this.name}}</td>
+                <td><img src ="{{this.thumbnail_url}}"/></td>
                 <td>{{this.cost}}</td>
                 <td>{{this.width}}</td>
                 <td>{{this.height}}</td>
