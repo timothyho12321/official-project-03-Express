@@ -2,7 +2,7 @@ const express = require("express");
 const dataLayer = require("../dal/products");
 
 
-const { createProductForm, bootstrapField, createSearchForm } = require("../forms");
+const { createProductForm, bootstrapField, createSearchForm, createVariantForm } = require("../forms");
 const { Account, Soap, Order, Base, Variant, CartItem, OrderItem, Type, Smell, Purpose, Oil } = require("../models");
 const router = express.Router();
 
@@ -25,11 +25,9 @@ router.get('/', async (req, res) => {
     searchForm.handle(req, {
         'success': async function (form) {
 
-
             if (form.data.name) {
                 q.where('name', 'like', '%' + form.data.name + "%");
             }
-
 
             if (form.data.min_cost) {
                 q.where('cost', '>=', form.data.min_cost)
@@ -59,7 +57,6 @@ router.get('/', async (req, res) => {
 
             if (form.data.max_width) {
                 q.where('width', '<=', form.data.max_width)
-
             }
 
 
@@ -68,12 +65,9 @@ router.get('/', async (req, res) => {
 
             }
 
-
             if (form.data.smells) {
                 q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
                     .where('smell_id', 'in', form.data.smells.split(','))
-
-
             }
 
             const products = await q.fetch({
@@ -437,24 +431,83 @@ router.get('/:soap_id/variants', async (req, res) => {
         require: true
     })
 
-    
 
     res.render("variants/index" , {
         'soap': soap.toJSON(),
         'variants': variants.toJSON()
     })
 
-
-
-
-
-
 })
 
+//////////////////////////////////// END OF READ FOR VARIANT ////////////////
+
+//////////////////////////////////// START OF CREATE ROUTE ////////////////
 
 
-//////////////////////////////////// START OF READ FOR VARIANT ////////////////
+router.get("/:product_id/variants/create", async (req , res) => {
+    
+    const variantForm = createVariantForm();
 
+    res.render("variants/create" , {
+        form: variantForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+    })
+})
+
+router.post("/:soap_id/variants/create" , async (req , res) => {
+    let soapId = req.params.soap_id
+  
+    
+    const soap = await Soap.where({
+        'id': soapId
+    }).fetch({
+        withRelated: ['base', 'oil', 'type', 'purposes', 'smells'],
+        require: true
+    })
+
+
+    const variantForm = createVariantForm();
+    variantForm.handle(req , {
+        'success': async function(form){
+           
+            const variantObject = new Variant();
+
+            // let { color_id, ...otherData } = form.data;
+            // variantObject.set(otherData);
+            let newObject = form.data
+            newObject.soap_id = soapId
+            console.log(newObject);
+            
+            variantObject.set(form.data);
+            await variantObject.save();
+
+            req.flash("success_messages" , `Variant for the ${variantObject.get('name')} has been added`)
+            res.redirect(`/products/${soapId}/variants`)
+        },
+        'error': function(form){
+
+
+            res.render('variants/create' , {
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        },
+        'empty': function(form){
+
+
+            res.render('variants/create' , {
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+            })
+        }
+    })
+})
 
 
 

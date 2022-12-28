@@ -69,7 +69,11 @@
                 <td>{{this.name}}</td>
                 <td><img src="{{this.thumbnail_url}}" /></td>
                 <td>{{this.stock}}</td>
+
                 <td>{{this.last_updated}}</td>
+
+                {{!-- <td>{{date this.last_updated}}</td> --}}
+                {{!-- <td>/{{moment this.last_updated format = "ddd, DD MMM YYYY"}}</td> --}}
                 <td>{{this.color.color}}</td>
             </tr>
             {{/each}}
@@ -80,7 +84,7 @@
 </div>
 
 
-
+<a href="/products/{this.id}/variants/create" value="Add2"/>
 <button class="btn btn-primary">Add New Variant.</button>
 {{/block}}
 
