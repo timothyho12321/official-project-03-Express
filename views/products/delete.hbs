@@ -7,11 +7,11 @@
 
 
 <form method="POST">
-
+    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
     <div class="alert alert-danger"> Do you confirm to delete {{product.name}}</div>
     <input type="submit" class="btn btn-danger" value="Delete" />
     <a href="/products" class="btn btn-success">Cancel</a>
-   
+
 </form>
 
 

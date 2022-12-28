@@ -2,65 +2,99 @@
 
 {{#block 'content'}}
 
+<div class="accordion accordion-flush" id="accordionFlushExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                Fill in Detailed Search
+            </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+            data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+
+                <h5>Filter your search</h5>
+                <form method="GET">
+                    {{{form}}}
+                    <input type="submit" class="btn btn-primary mb-3 mt-3" value="Search" />
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
 <h1>Soap Products</h1>
-<table class="table">
-    <thead>
-        <th scope="col">Name</th>
-        <th scope="col">Cost</th>
-        <th scope="col">Width</th>
-        <th scope="col">Height</th>
-        <th scope="col">Shape</th>
-        <th scope="col">Date Created</th>
-        <th scope="col">Last Updated</th>
-        <th scope="col">Base</th>
-        <th scope="col">Oil</th>
-        <th scope="col">Type</th>
-        <th scope="col">Purpose</th>
-        <th scope="col">Smell</th>
-        <th></th>
-    </thead>
 
-    <tbody>
-        {{#each products}}
-        <tr>
-            <td>{{this.name}}</td>
-            <td>{{this.cost}}</td>
-            <td>{{this.width}}</td>
-            <td>{{this.height}}</td>
-            <td>{{this.shape}}</td>
-            <td>{{this.date_created}}</td>
-            <td>{{this.last_updated}}</td>
-            <td>{{this.base.base}}</td>
-            <td>{{this.oil.oil}}</td>
-            <td>{{this.type.type}}</td>
-            <td>
-                {{#each this.purposes}}
-                <div class="span badge bg-success"> {{this.purpose}}</div>
-                {{/each}}
-            </td>
+<div class="table-container" style="overflow-x: scroll; background-color:#F5F5DC">
+    <table class="table">
+        <thead>
+            <th scope="col">Name</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Width</th>
+            <th scope="col">Height</th>
+            <th scope="col">Shape</th>
+            <th scope="col">Date Created</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Base</th>
+            <th scope="col">Oil</th>
+            <th scope="col">Type</th>
+            <th scope="col">Purpose</th>
+            <th scope="col">Smell</th>
+            <th></th>
+        </thead>
 
-            <td>
-                {{#each this.smells}}
-                <div class="span badge bg-info">{{this.smell}}</div>
-                {{/each}}
-            </td>
+        <tbody>
+            {{#each products}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.cost}}</td>
+                <td>{{this.width}}</td>
+                <td>{{this.height}}</td>
+                <td>{{this.shape}}</td>
+                <td>{{this.date_created}}</td>
+                <td>{{this.last_updated}}</td>
+                <td>{{this.base.base}}</td>
+                <td>{{this.oil.oil}}</td>
+                <td>{{this.type.type}}</td>
+                <td>
+                    {{#each this.purposes}}
+                    <div class="span badge bg-success"> {{this.purpose}}</div>
+                    {{/each}}
+                </td>
 
-            <td>
-                <a href="products/update/{{this.id}}" class="btn btn-success btn-sm" />Update</a>
+                <td>
+                    {{#each this.smells}}
+                    <div class="span badge bg-info">{{this.smell}}</div>
+                    {{/each}}
+                </td>
 
-                <a href="products/delete/{{this.id}}" class="btn btn-danger btn-sm" />Remove</a>
+                <td>
+                    <a href="products/update/{{this.id}}" class="btn btn-success btn-sm" />Update</a>
 
-            </td>
+                    <a href="products/delete/{{this.id}}" class="btn btn-danger btn-sm mt-1" />Remove</a>
 
-        </tr>
+                </td>
 
-
-        {{/each}}
-
+            </tr>
 
 
-    </tbody>
-</table>
+            {{/each}}
+
+
+
+        </tbody>
+    </table>
+
+</div>
+
+
 
 
 {{/block}}
