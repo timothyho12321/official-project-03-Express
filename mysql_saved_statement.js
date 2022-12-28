@@ -78,7 +78,7 @@ INSERT INTO purposes_soaps(purpose_id, soap_id
         INSERT INTO cart_items(quantity, account_id, variant_id
             )
             VALUES(
-                3, 1, 1
+                1, 5, 9
             );
 
 
@@ -88,9 +88,11 @@ INSERT INTO purposes_soaps(purpose_id, soap_id
                     3, 2, 1
                 );
 
-
-
+            
     
+
+
+
 
 
 INSERT INTO types(type
@@ -98,33 +100,6 @@ INSERT INTO types(type
 VALUES(
     "Natural"
 );
-
-
-INSERT INTO types(type
-)
-VALUES(
-    "Synthetic"
-);
-
-
-    INSERT INTO types(type
-)
-VALUES(
-    "Organic"
-);
-
-        INSERT INTO types(type
-)
-VALUES(
-    "Vegan"
-);
-
-
-INSERT INTO bases(base
-    )
-    VALUES(
-        "Test Base"
-    );
 
 
 

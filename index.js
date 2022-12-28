@@ -93,13 +93,25 @@ const productRoutes = require('./routes/products')
 const accountRoutes = require('./routes/accounts')
 const cloudinaryRoutes = require('./routes/cloudinary')
 
-async function main() {
 
+// define the api routes
+const api = {
+    cartForShopping: require('./routes/api/cart')
+
+
+}
+
+
+async function main() {
 
     app.use('/', landingRoutes);
     app.use('/products', productRoutes);
     app.use('/accounts', accountRoutes)
     app.use('/cloudinary', cloudinaryRoutes)
+
+    // define the api routes
+    app.use('/cartforshopping', express.json(), api.cartForShopping)
+
 }
 
 main();
