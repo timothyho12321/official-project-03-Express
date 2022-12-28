@@ -66,16 +66,14 @@ INSERT INTO purposes_soaps(purpose_id, soap_id
 
 
         INSERT INTO variants(image_url,
-            thumbnail_url, stock, name, color_id,
+            thumbnail_url, stock, name, last_updated, color_id,
             soap_id
         )
         VALUES(
             "www.google.com", "www.youtube.com",
-            3, "Big Size Soap", 5, 1
+            3, "Big Size Soap", "2022-10-10", 5, 28
         );
         
-
-
 
         INSERT INTO cart_items(quantity, account_id, variant_id
             )
@@ -90,6 +88,9 @@ INSERT INTO purposes_soaps(purpose_id, soap_id
                     3, 2, 1
                 );
 
+
+
+    
 
 
 INSERT INTO types(type

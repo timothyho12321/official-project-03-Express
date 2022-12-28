@@ -403,4 +403,61 @@ router.post('/delete/:soap_id', async function (req, res) {
 
 })
 
+
+
+//////////////////////////////////// END OF DELETE ROUTE ////////////////
+
+
+//////////////////////////////////// START OF VARIANT ///////////////////
+
+
+//////////////////////////////////// START OF READ FOR VARIANT ////////////////
+
+
+router.get('/:soap_id/variants', async (req, res) => {
+
+    const soapId = req.params.soap_id
+
+    const variants = await Variant.where({
+        'soap_id': soapId
+    }).fetchAll({
+        withRelated: ['soap', 'color'],
+        require: false
+    })
+
+//     let a = variants.toJSON();
+    console.log("variant details",variants.toJSON());
+// console.log("Variant name",a[0].name)
+
+
+    const soap = await Soap.where({
+        'id': soapId
+    }).fetch({
+        withRelated: ['base', 'oil', 'type', 'purposes', 'smells'],
+        require: true
+    })
+
+    
+
+    res.render("variants/index" , {
+        'soap': soap.toJSON(),
+        'variants': variants.toJSON()
+    })
+
+
+
+
+
+
+})
+
+
+
+//////////////////////////////////// START OF READ FOR VARIANT ////////////////
+
+
+
+
+
+
 module.exports = router;

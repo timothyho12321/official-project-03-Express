@@ -1,0 +1,87 @@
+{{#extends 'base'}}
+{{!-- {{#block 'css'}}
+<link rel="stylesheet" href="/style/productTable.css">
+{{/block}} --}}
+{{#block 'content'}}
+
+
+<h1>Original Product: {{this.name}}</h1>
+
+<div class="table-container" style="overflow-x: scroll; background-color:#F5F5DC">
+    <table class="table">
+        <thead>
+            <th scope="col">Name</th>
+            <th scope="col">Image</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Shape</th>
+            <th scope="col">Date Created</th>
+            <th scope="col">Base</th>
+            <th scope="col">Purpose</th>
+            <th scope="col">Smell</th>
+        </thead>
+
+        <tbody>
+           
+            <tr>
+                <td>{{soap.name}}</td>
+                <td><img src="{{this.thumbnail_url}}" /></td>
+                <td>{{soap.cost}}</td>
+                <td>{{soap.shape}}</td>
+                <td>{{soap.date_created}}</td>
+                <td>{{soap.base.base}}</td>
+                <td>
+                    {{#each soap.purposes}}
+                    <div class="span badge bg-success"> {{this.purpose}}</div>
+                    {{/each}}
+                </td>
+                <td>
+                    {{#each soap.smells}}
+                    <div class="span badge bg-info">{{this.smell}}</div>
+                    {{/each}}
+                </td>
+            </tr>
+            
+
+        </tbody>
+    </table>
+
+</div>
+
+
+<h1>Variant details</h1>
+
+
+
+
+<div class="table-container" style="overflow-x: scroll; background-color:#ededb7">
+    <table class="table">
+        <thead>
+            <th scope="col">Name</th>
+            <th scope="col">Image</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Color</th>
+        </thead>
+
+        <tbody>
+           {{#each variants}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td><img src="{{this.thumbnail_url}}" /></td>
+                <td>{{this.stock}}</td>
+                <td>{{this.last_updated}}</td>
+                <td>{{this.color.color}}</td>
+            </tr>
+            {{/each}}
+
+        </tbody>
+    </table>
+
+</div>
+
+
+
+<button class="btn btn-primary">Add New Variant.</button>
+{{/block}}
+
+{{/extends}}
