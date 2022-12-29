@@ -71,7 +71,10 @@
                 <td><img src="{{this.thumbnail_url}}" /></td>
                 <td>{{this.stock}}</td>
 
-                <td>{{this.last_updated}}</td>
+                <td>
+                    {{#changeDate this.last_updated}}
+                    {{/changeDate}}
+                </td>
 
                 {{!-- <td>{{date this.last_updated}}</td> --}}
                 {{!-- <td>/{{moment this.last_updated format = "ddd, DD MMM YYYY"}}</td> --}}
