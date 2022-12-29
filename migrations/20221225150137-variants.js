@@ -41,7 +41,12 @@ exports.up = function(db) {
       type: "string",
       length: 30,
       notNull: true
-    }
+    },
+    'last_updated': {
+      type: "date",
+      notNull: true
+    },
+
   })
 };
 

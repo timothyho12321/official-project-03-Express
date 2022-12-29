@@ -48,14 +48,15 @@
             <th scope="col">Type</th>
             <th scope="col">Purpose</th>
             <th scope="col">Smell</th>
-            <th></th>
+            <th scope="col">Changes</th>
+            <th scope="col">Variants</th>
         </thead>
 
         <tbody>
             {{#each products}}
             <tr>
                 <td>{{this.name}}</td>
-                <td><img src ="{{this.thumbnail_url}}"/></td>
+                <td><img src="{{this.thumbnail_url}}" /></td>
                 <td>{{this.cost}}</td>
                 <td>{{this.width}}</td>
                 <td>{{this.height}}</td>
@@ -81,6 +82,11 @@
                     <a href="products/update/{{this.id}}" class="btn btn-success btn-sm" />Update</a>
 
                     <a href="products/delete/{{this.id}}" class="btn btn-danger btn-sm mt-1" />Remove</a>
+
+                </td>
+                <td>
+                    <a href="products/{{this.id}}/variants" class="btn btn-warning btn-sm" />Variant</a>
+
 
                 </td>
 

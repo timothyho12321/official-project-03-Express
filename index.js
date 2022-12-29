@@ -53,9 +53,20 @@ app.use(function (req, res, next) {
 })
 
 
+//OLD CSURF ROUTE
+// app.use(csrf());
 
-app.use(csrf());
 
+const csrfInstance = csrf();
+app.use(function (req, res, next) {
+
+  if (req.url.slice(0,5)=="/api/") {
+    return next();
+
+  }
+  csrfInstance(req, res, next);
+
+})
 
 
 
@@ -93,13 +104,24 @@ const productRoutes = require('./routes/products')
 const accountRoutes = require('./routes/accounts')
 const cloudinaryRoutes = require('./routes/cloudinary')
 
-async function main() {
 
+// define the api routes
+const api = {
+    cartForShopping: require('./routes/api/cart')
+
+}
+
+
+async function main() {
 
     app.use('/', landingRoutes);
     app.use('/products', productRoutes);
     app.use('/accounts', accountRoutes)
     app.use('/cloudinary', cloudinaryRoutes)
+
+    // define the api routes
+    app.use('/api/cartforshopping', express.json(), api.cartForShopping)
+
 }
 
 main();

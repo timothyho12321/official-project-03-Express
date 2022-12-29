@@ -139,11 +139,11 @@ const createProductForm = (allSmells = [],
             choices: allSmells
         }),
         'image_url': fields.string({
-            // required: false,
-            // errorAfterField: true,
-            // cssClasses: {
-            //     label: ['form-label']
-            // },
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
             widget: widgets.hidden()
         }),
         'thumbnail_url': fields.string({
@@ -394,6 +394,60 @@ const createSearchForm = (allSmells = [],
 };
 
 
+const createVariantForm = (allColors = []) => {
+    return forms.create({
+        'name': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'stock': fields.number({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer(), validators.min(0)]
+        }),
+        'last_updated': fields.date({
+            label: "Last Updated",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.date()
+        }),
+        'color_id': fields.number({
+            label: "Color",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: allColors
+        }),
+        'image_url': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.hidden()
+        }),
+        'thumbnail_url': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.hidden()
+        })
+        
+    })}
 
 
 module.exports = {
@@ -401,5 +455,6 @@ module.exports = {
     createProductForm,
     createRegisterForm,
     createLoginForm,
-    createSearchForm
+    createSearchForm,
+    createVariantForm
 }

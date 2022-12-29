@@ -6,68 +6,74 @@ const getCart = async (accountId) => {
         'account_id': accountId
     }).fetch({
         require: false,
-        withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
+        withRelated: ['account', 'variant']
     })
 
 }
 
 
-// const getCartItemByUserAndTitle = async (userId, titleId) => {
-//     return await CartItem.where({
-//         'user_id': userId,
-//         'title_id': titleId
-//     }).fetch({
-//         require: false
-//     })
+const getCartItemByAccountAndVariant = async (accountId, variantId) => {
+    return await CartItem.where({
+        'account_id': accountId,
+        'variant_id': variantId
+    }).fetch({
+        require: false
+    })
 
 
-// }
+}
 
 
-// async function createCartItem(userId, titleId, quantity) {
+async function createCartItem(accountId, variantId, quantity) {
 
-//     let cartItem = new CartItem({
-//         'user_id': userId,
-//         'title_id': titleId,
-//         'quantity': quantity
+    let cartItem = new CartItem({
+        'account_id': accountId,
+        'variant_id': variantId,
+        'quantity': quantity
 
-//     })
+    })
 
-//     await cartItem.save();
-//     return cartItem;
+    await cartItem.save();
+    return cartItem;
 
-// }
-
-
-// async function removeFromCart(userId, titleId) {
-//     let cartItem = await getCartItemByUserAndTitle(userId, titleId);
-//     if (cartItem) {
-//         await cartItem.destroy();
-//         return true;
-
-//     }
-//     return false;
-
-// }
+}
 
 
+async function removeFromCart(accountId, variantId) {
+    let cartItem = await getCartItemByAccountAndVariant(accountId, variantId);
+    if (cartItem) {
+        await cartItem.destroy();
+        return true;
 
-// async function updateQuantity(userId, titleId, newQuantity) {
+    }
+    return false;
 
-//     const cartItem = await getCartItemByUserAndTitle(userId, titleId);
-    
-//     if (cartItem) {
-//         cartItem.set('quantity', newQuantity);
-//         await cartItem.save();
-//         return cartItem;
-
-//     } else {
-//         return false;
-//     }
-
-// }
+}
 
 
-module.exports = { getCart, getCartItemByUserAndTitle, createCartItem, removeFromCart, updateQuantity }
+async function updateQuantity(accountId, variantId, newQuantity) {
+
+    const cartItem = await getCartItemByAccountAndVariant(accountId, variantId);
+
+    if (cartItem) {
+        cartItem.set('quantity', newQuantity);
+        await cartItem.save();
+        return cartItem;
+
+    } else {
+        return false;
+    }
+
+}
+
+
+module.exports =
+{
+    getCart,
+    getCartItemByAccountAndVariant,
+    createCartItem,
+    removeFromCart,
+    updateQuantity
+}
 
 
