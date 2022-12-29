@@ -51,7 +51,6 @@ async function removeFromCart(accountId, variantId) {
 }
 
 
-
 async function updateQuantity(accountId, variantId, newQuantity) {
 
     const cartItem = await getCartItemByAccountAndVariant(accountId, variantId);

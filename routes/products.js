@@ -326,14 +326,24 @@ router.post("/update/:soap_id", async function (req, res) {
             let oldPurposes = await findSoap.related('purposes').pluck('id')
             // console.log(oldPurposes);
 
+            try {
+                await findSoap.smells().detach(oldSmells);
+                await findSoap.smells().attach(smells.split(","));
+            }
+            catch (e) {
 
-            //DOES THIS LEAD TO THE DEADLOCK FOUND ERROR?
-            await findSoap.smells().detach(oldSmells);
-            await findSoap.smells().attach(smells.split(","))
+                console.log(e)
+            }
+
+            try {
+                await findSoap.purposes().detach(oldPurposes);
+                await findSoap.purposes().attach(purposes.split(","));
+
+            } catch (e) {
+                console.log(e)
+            }
 
 
-            await findSoap.purposes().detach(oldPurposes);
-            await findSoap.purposes().attach(purposes.split(","))
 
             // res.send("send message to check if product route is the issue")
             res.redirect('/products')
@@ -434,7 +444,8 @@ router.get('/:soap_id/variants', async (req, res) => {
 
     res.render("variants/index", {
         'soap': soap.toJSON(),
-        'variants': variants.toJSON()
+        'variants': variants.toJSON(),
+        'variants-date': variants.toJSON()
     })
 
 })
@@ -644,7 +655,7 @@ router.get('/:soap_id/variants/:variant_id/delete', async function (req, res) {
 
     res.render('variants/delete', {
         'variant': findVariant.toJSON(),
-        
+
     })
 
 
@@ -679,20 +690,20 @@ router.post('/:soap_id/variants/:variant_id/delete', async function (req, res) {
         deleteHappen = true;
     }
 
-await findVariant.destroy();
+    await findVariant.destroy();
 
 
-if (deleteHappen) {
-    req.flash('success_messages' , `The variant ${vNameForEnd.name} was
+    if (deleteHappen) {
+        req.flash('success_messages', `The variant ${vNameForEnd.name} was
      deleted from '${soap.get('name')}'.`)
-    res.redirect(`/products/${soapId}/variants`);
+        res.redirect(`/products/${soapId}/variants`);
 
-} else {
-    req.flash('error_messages' , `Deletion failed for variant ${findVariant.get('name')} 
+    } else {
+        req.flash('error_messages', `Deletion failed for variant ${findVariant.get('name')} 
     in '${soap.get('name')}'. Please check again.`)
-    res.redirect(`/products/${soapId}/variants`);
-}
-    
+        res.redirect(`/products/${soapId}/variants`);
+    }
+
 
 })
 
