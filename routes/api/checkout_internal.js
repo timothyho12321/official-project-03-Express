@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     // Only use when it is saved to req as object
     // currentAccountId = req.account.id 
 
-    const currentAccountId = 5;
+    const currentAccountId = 6;
 
     const checkoutCart = new CartServices(currentAccountId);
 
@@ -56,15 +56,15 @@ router.get('/', async (req, res) => {
 
 
         if (itemUrl) {
-             lineItem.price_data.product_data.images = [itemUrl];
+            lineItem.price_data.product_data.images = [itemUrl];
         }
         lineItems.push(lineItem);
 
         // save the quantity data along with the product id
-            meta.push({
-                'product_id' : i.get('variant_id'),
-                'quantity': i.get('quantity')
-            })
+        meta.push({
+            'variant_id': i.get('variant_id'),
+            'quantity': i.get('quantity')
+        })
 
     }
 
@@ -72,15 +72,15 @@ router.get('/', async (req, res) => {
 
     let metaData = JSON.stringify(meta);
     const payment = {
-        payment_method_types: ['card'],
-        mode:'payment',
+        payment_method_types: ['card', 'paynow'],
+        mode: 'payment',
         line_items: lineItems,
         success_url: process.env.STRIPE_SUCCESS_URL,
         cancel_url: process.env.STRIPE_ERROR_URL,
         billing_address_collection: 'required',
-    	shipping_address_collection: {
-    		allowed_countries: ['SG']
-    	},
+        shipping_address_collection: {
+            allowed_countries: ['SG']
+        },
         metadata: {
             'orders': metaData
         }
@@ -89,11 +89,16 @@ router.get('/', async (req, res) => {
     // step 3: register the session
 
     let stripeSession = await Stripe.checkout.sessions.create(payment)
-    console.log(stripeSession);
+    // console.log(stripeSession);
     console.log("Reached until checkout render")
-    res.render('checkout_internal/checkout', {
-        'sessionId': stripeSession.id, // 4. Get the ID of the session
-        'publishableKey': process.env.STRIPE_PUBLISHABLE_KEY
+
+    // res.render('checkout_internal/checkout', {
+    //     'sessionId': stripeSession.id, // 4. Get the ID of the session
+    //     'publishableKey': process.env.STRIPE_PUBLISHABLE_KEY
+    // })
+
+    res.json({
+        "payment detail": stripeSession
     })
 
 
@@ -104,7 +109,81 @@ router.get('/', async (req, res) => {
 
 })
 
-router.get("/success", function(req,res){
+
+router.post('/update_payment', express.raw({ type: 'application/json' }),
+    async (req, res) => {
+
+        let payload = req.body;
+        console.log("Payload", payload)
+        let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
+        let signature = req.headers["stripe-signature"];
+
+        console.log("entered the stripe return order message.")
+
+        let event = null;
+        // CAN SHOW FROM PAYLOAD TYPE = 'checkout.session.completed'
+        try {
+            event = Stripe.webhooks.constructEvent(payload, signature, endpointSecret);
+
+            console.log(event)
+
+        } catch (e) {
+
+            res.status(500)
+            res.send({
+                'error': e.message
+
+            })
+
+        }
+
+
+        if (event.type == "checkout.session.completed") {
+            console.log(event.data.object)
+            // console.log("the webhook route ran")
+            //SECOND PART OF PROJECT 3 IMPLEMENTATION 
+            //TO CONTINUE FROM HERE TO CREATE NEW ORDER, SET DELIVERY STATUS, SEND RECEIPT PDF
+
+
+            //TO CONTINUE HERE TO MAKE ORDER MANAGEMENT
+            let stripeSession = event.data.object
+            console.log(stripeSession);
+
+            const address = stripeSession.customer_details.address
+            // address is currently null except country
+            const invoice = stripeSession.invoice
+            // need to enable invoice_creation to enabled: true
+
+            const metadata = stripeSession.metadata;
+
+            const payment_intent = stripeSession.payment_intent;
+            // console.log(payment_intent);
+
+            const payment_method_types = stripeSession.payment_method_types[0];
+            // console.log(payment_method_types);
+            const payment_status = stripeSession.payment_status;
+
+
+            const shipping_address_collection = stripeSession.shipping_address_collection;
+
+
+            const status = stripeSession.status;
+
+        }
+
+        res.sendStatus(200);
+
+
+
+
+    }
+)
+
+
+
+
+
+router.get("/success", function (req, res) {
     res.json({
         "message": "Stripe payment submitted."
     })
