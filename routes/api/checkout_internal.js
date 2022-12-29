@@ -89,22 +89,17 @@ router.get('/', async (req, res) => {
     // step 3: register the session
 
     let stripeSession = await Stripe.checkout.sessions.create(payment)
-    // console.log(stripeSession);
+    console.log(stripeSession);
     console.log("Reached until checkout render")
 
-    // res.render('checkout_internal/checkout', {
-    //     'sessionId': stripeSession.id, // 4. Get the ID of the session
-    //     'publishableKey': process.env.STRIPE_PUBLISHABLE_KEY
-    // })
 
-    res.json({
-        "payment detail": stripeSession
+    res.render('checkouts/checkout', {
+        'sessionId': stripeSession.id, // 4. Get the ID of the session
+        'publishableKey': process.env.STRIPE_PUBLISHABLE_KEYS
     })
 
-
     // res.json({
-    //     // "message": dotGet
-    //     "message": saveItemToJson
+    //     "payment detail": stripeSession
     // })
 
 })
@@ -113,19 +108,28 @@ router.get('/', async (req, res) => {
 router.post('/update_payment', express.raw({ type: 'application/json' }),
     async (req, res) => {
 
-        let payload = req.body;
-        console.log("Payload", payload)
-        let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
-        let signature = req.headers["stripe-signature"];
 
         console.log("entered the stripe return order message.")
 
+
+        let payload = req.body;
+        console.log("Payload", payload)
+        let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
+        console.log("esecret", endpointSecret);
+        let signature = req.headers["stripe-signature"];
+        console.log("sign", signature);
+
+        // console.log("secret key", process.env.STRIPE_SECRET_KEY)
+
         let event = null;
         // CAN SHOW FROM PAYLOAD TYPE = 'checkout.session.completed'
+
+        // WHY IS THE EVENT NOT RUNNING. NO EVENT DATA
+
         try {
             event = Stripe.webhooks.constructEvent(payload, signature, endpointSecret);
 
-            console.log(event)
+            console.log("event1", event)
 
         } catch (e) {
 
@@ -134,11 +138,11 @@ router.post('/update_payment', express.raw({ type: 'application/json' }),
                 'error': e.message
 
             })
-
+            return;
         }
+        console.log("event2", event);
 
-
-        if (event.type == "checkout.session.completed") {
+        if (event?.type == "checkout.session.completed") {
             console.log(event.data.object)
             // console.log("the webhook route ran")
             //SECOND PART OF PROJECT 3 IMPLEMENTATION 
