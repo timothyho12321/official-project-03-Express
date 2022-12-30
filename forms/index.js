@@ -225,36 +225,6 @@ const createRegisterForm = () => {
             },
             widget: widgets.date()
         }),
-        'shipping_country': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
-        'shipping_address_1': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
-        'shipping_address_2': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
-        'shipping_postal_code': fields.number({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            },
-            validators: [validators.integer()]
-
-        }),
         'role_id': fields.number({
             required: true,
             errorAfterField: true,
@@ -262,8 +232,7 @@ const createRegisterForm = () => {
                 label: ['form-label']
             },
             validators: [validators.integer()]
-
-        }),
+        })
     })
 }
 
@@ -446,8 +415,9 @@ const createVariantForm = (allColors = []) => {
             },
             widget: widgets.hidden()
         })
-        
-    })}
+
+    })
+}
 
 
 module.exports = {
