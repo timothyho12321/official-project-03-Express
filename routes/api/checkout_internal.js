@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     // Only use when it is saved to req as object
     // currentAccountId = req.account.id 
 
-    const currentAccountId = 6;
+    const currentAccountId = 2;
 
     const checkoutCart = new CartServices(currentAccountId);
 
