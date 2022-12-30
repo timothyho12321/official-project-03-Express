@@ -1,4 +1,5 @@
 const express = require('express');
+const orderDAL = require('../../dal/orders');
 const router = express.Router();
 
 const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
@@ -134,6 +135,23 @@ router.post('/', express.raw({ type: 'application/json' }),
                 orderStatus = 1;
             }
 
+            //create billingAddressObject
+            const billingAddressObject = {
+                billing_country: stripeSession.customer_details.address.country,
+                billing_address_1: stripeSession.customer_details.address.line1,
+                billing_address_2: stripeSession.customer_details.address.line2,
+                billing_postal_code: stripeSession.customer_details.address.postal_code,
+
+            }
+
+            //create shippingAddressObject
+            const shippingAddressObject = {
+                shipping_country: paymentIntent2.shipping.address.country,
+                shipping_address_1: paymentIntent2.shipping.address.line1,
+                shipping_address_2: paymentIntent2.shipping.address.line2,
+                shipping_postal_code: paymentIntent2.shipping.address.postal_code,
+            }
+
             const orderDetails = {
                 account_id: currentAccountId,
                 total_cost: totalAmount,
@@ -143,20 +161,25 @@ router.post('/', express.raw({ type: 'application/json' }),
                 order_date: convertTodayOrderDate,
                 delivery_date: deliverDateOneWeek,
                 order_status_id: orderStatus,
-                payment_reference: paymentIntent2
+                payment_reference: paymentIntent2,
 
 
-                // shipping_country: stripeSession.customer_details.address.country,
-                // shipping_address_1: stripeSession.customer_details.address.line1,
-                // shipping_address_2: stripeSession.customer_details.address.line2,
-                // shipping_postal_code: stripeSession.customer_details.address.postal_code,
-                // billing_country: stripeSession.customer_details.address.country,
-                // billing_address_1: stripeSession.customer_details.address.line1,
-                // billing_address_2: stripeSession.customer_details.address.line2,
-                // billing_postal_code: stripeSession.customer_details.address.postal_code,
+                shipping_country: shippingAddressObject.shipping_country,
+                shipping_address_1: shippingAddressObject.shipping_address_1,
+                shipping_address_2: shippingAddressObject.shipping_address_2,
+                shipping_postal_code: shippingAddressObject.shipping_postal_code,
+                billing_country: billingAddressObject.billing_country,
+                billing_address_1: billingAddressObject.billing_address_1,
+                billing_address_2: billingAddressObject.billing_address_2,
+                billing_postal_code: billingAddressObject.billing_postal_code,
 
             }
             console.log("orderDetails", orderDetails);
+
+
+            const makeOrder = await orderDAL.addOrder(orderDetails);
+            console.log(makeOrder.toJSON());
+
 
         }
 
