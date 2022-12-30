@@ -19,14 +19,14 @@ router.get('/', async (req, res) => {
 
 
     let saveItemToJson = checkoutItems.toJSON();
-    console.log("SEE CHECKOUT 2 ITEMS",saveItemToJson);
+    console.log("SEE CHECKOUT 2 ITEMS", saveItemToJson);
 
 
     // save item to json to read name variable 
     // need to debug here why does two different variant look the same on the checkout
-    let itemCost;
-    let itemName;
-    let itemUrl = null;
+    let itemsCost = [];
+    let itemsName = [];
+    let itemsUrl = [];
 
     for (let item of saveItemToJson) {
         itemCost = item.variant.soap.cost
@@ -37,29 +37,45 @@ router.get('/', async (req, res) => {
 
         itemUrl = item.variant.image_url
         console.log("itemUrl", itemUrl);
+
+        itemsCost.push(itemCost);
+        itemsName.push(itemName);
+        itemsUrl.push(itemUrl);
     }
 
-
+    
+    // console.log("pushed itemsCost", itemsCost)
+    // console.log("pushed itemsName", itemsName)
+    // console.log("pushed itemsUrl", itemsUrl)
 
     // step 1 - create line items
 
     let lineItems = [];
     let meta = [];
+
+    // used to read in values for submitting (from saveItemToJson)
+    let counter = -1;
     for (let i of checkoutItems) {
+        
+        counter = counter + 1;
+        
+        console.log("pushed itemsName i", itemsName[counter])
+        
+
         const lineItem = {
             'quantity': i.get('quantity'),
             'price_data': {
                 'currency': 'SGD',
-                'unit_amount': itemCost,
+                'unit_amount': itemsCost[counter],
                 'product_data': {
-                    'name': itemName
+                    'name': itemsName[counter]
                 }
             }
         }
 
 
         if (itemUrl) {
-            lineItem.price_data.product_data.images = [itemUrl];
+            lineItem.price_data.product_data.images = [itemsUrl[counter]];
         }
         lineItems.push(lineItem);
 
@@ -78,7 +94,7 @@ router.get('/', async (req, res) => {
     const payment = {
         payment_method_types: ['card', 'paynow'],
         mode: 'payment',
-        invoice_creation: {enabled: true},
+        invoice_creation: { enabled: true },
         line_items: lineItems,
         success_url: process.env.STRIPE_SUCCESS_URL,
         cancel_url: process.env.STRIPE_ERROR_URL,

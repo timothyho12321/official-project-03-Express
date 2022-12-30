@@ -177,12 +177,24 @@ router.post('/', express.raw({ type: 'application/json' }),
             console.log("orderDetails", orderDetails);
 
 
-            // const makeOrder = await orderDAL.addOrder(orderDetails);
-           
+            const makeOrder = await orderDAL.addOrder(orderDetails);
+            const getOrderId = makeOrder.get('id');
 
-             console.log("metadata", metaData)
+            console.log("metadata", metaData)
 
 
+            for (eachLineItem of metaData) {
+
+
+                delete eachLineItem.account_id;
+                eachLineItem.order_id = getOrderId;
+                console.log(eachLineItem);
+
+                const makeOrderItem = await orderDAL.addOrderItem(eachLineItem);
+                console.log("each order item", makeOrderItem.toJSON());
+
+            }
+            // STOP HERE TO CONTINUE UPDATE STOCK 
 
         }
 
