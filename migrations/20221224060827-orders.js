@@ -63,14 +63,14 @@ exports.up = function(db) {
       length: 150,
       notNull: true
     },
-    'billing_postal_code': {
+    'shipping_postal_code': {
       type: "string",
-      length: 30,
+      length: 15,
       notNull: true
     },
     'billing_country': {
       type: "string",
-      length: 20,
+      length: 30,
       notNull: true
     },
     'billing_address_1': {
