@@ -19,8 +19,11 @@ router.get('/', async (req, res) => {
 
 
     let saveItemToJson = checkoutItems.toJSON();
-    console.log(saveItemToJson);
+    console.log("SEE CHECKOUT 2 ITEMS",saveItemToJson);
 
+
+    // save item to json to read name variable 
+    // need to debug here why does two different variant look the same on the checkout
     let itemCost;
     let itemName;
     let itemUrl = null;
@@ -30,7 +33,7 @@ router.get('/', async (req, res) => {
         console.log("itemCost", itemCost);
 
         itemName = item.variant.name
-        console.log("itemCost", itemCost);
+        console.log("itemName", itemCost);
 
         itemUrl = item.variant.image_url
         console.log("itemUrl", itemUrl);

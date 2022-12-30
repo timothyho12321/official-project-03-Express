@@ -177,8 +177,11 @@ router.post('/', express.raw({ type: 'application/json' }),
             console.log("orderDetails", orderDetails);
 
 
-            const makeOrder = await orderDAL.addOrder(orderDetails);
-            console.log(makeOrder.toJSON());
+            // const makeOrder = await orderDAL.addOrder(orderDetails);
+           
+
+             console.log("metadata", metaData)
+
 
 
         }

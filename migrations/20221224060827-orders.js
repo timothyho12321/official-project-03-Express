@@ -28,7 +28,7 @@ exports.up = function(db) {
     },
     'payment_reference': {
       type: "string",
-      length: 150,
+      length: 2800,
       notNull: true
     },
     'payment_type': {
