@@ -63,7 +63,8 @@ router.get('/', async (req, res) => {
         // save the quantity data along with the product id
         meta.push({
             'variant_id': i.get('variant_id'),
-            'quantity': i.get('quantity')
+            'quantity': i.get('quantity'),
+            'account_id': currentAccountId
         })
 
     }
@@ -74,6 +75,7 @@ router.get('/', async (req, res) => {
     const payment = {
         payment_method_types: ['card', 'paynow'],
         mode: 'payment',
+        invoice_creation: {enabled: true},
         line_items: lineItems,
         success_url: process.env.STRIPE_SUCCESS_URL,
         cancel_url: process.env.STRIPE_ERROR_URL,
@@ -89,7 +91,7 @@ router.get('/', async (req, res) => {
     // step 3: register the session
 
     let stripeSession = await Stripe.checkout.sessions.create(payment)
-    // console.log(stripeSession);
+    console.log(stripeSession);
     console.log("Reached until checkout render")
 
 
@@ -98,92 +100,95 @@ router.get('/', async (req, res) => {
         'publishableKey': process.env.STRIPE_PUBLISHABLE_KEYS
     })
 
+    // res.status(200)
     // res.json({
-    //     "payment detail": stripeSession
+    //     'sessionId': stripeSession.id, // 4. Get the ID of the session
+    //     'publishableKey': process.env.STRIPE_PUBLISHABLE_KEYS
     // })
 
 })
 
 
-router.post('/update_payment', express.raw({ type: 'application/json' }),
-    async (req, res) => {
+// router.post('/update_payment', express.raw({ type: 'application/json' }),
+//     async (req, res) => {
 
 
-        console.log("entered the stripe return order message.")
+//         console.log("entered the stripe return order message.")
 
 
-        let payload = req.body;
-        console.log("Payload", payload)
-        let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
-        console.log("esecret", endpointSecret);
-        let signature = req.headers["stripe-signature"];
-        console.log("sign", signature);
+//         let payload = req.body;
+//         // console.log("Payload", payload)
+//         let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
+//         // console.log("esecret", endpointSecret);
+//         let signature = req.headers["stripe-signature"];
+//         // console.log("sign", signature);
 
-        // console.log("secret key", process.env.STRIPE_SECRET_KEY)
+//         // console.log("secret key", process.env.STRIPE_SECRET_KEY)
 
-        let event = null;
-        // CAN SHOW FROM PAYLOAD TYPE = 'checkout.session.completed'
+//         let event = null;
+//         // CAN SHOW FROM PAYLOAD TYPE = 'checkout.session.completed'
 
-        // WHY IS THE EVENT NOT RUNNING. NO EVENT DATA
+//         // WHY IS THE EVENT NOT RUNNING. NO EVENT DATA
 
-        try {
+//         try {
 
-            console.log("entered the try catch route")
-            event = Stripe.webhooks.constructEvent(payload, signature, endpointSecret);
+//             console.log("entered the try catch route")
+//             // console.log("STRIPE obj", Stripe)
+//             event = Stripe.webhooks.constructEvent(req.body, signature, endpointSecret);
 
-            console.log("event1", event)
+//             console.log("event1", event)
 
-        } catch (e) {
+//         } catch (e) {
 
-            res.status(500)
-            res.send({
-                'error': e.message
+//             res.status(500)
+//             res.send({
+//                 'error': e.message
 
-            })
-            return;
-        }
-        console.log("event2", event);
+//             })
+//             return;
+//         }
+//         console.log("event2", event);
 
-        if (event?.type == "checkout.session.completed") {
-            console.log(event.data.object)
-            // console.log("the webhook route ran")
-            //SECOND PART OF PROJECT 3 IMPLEMENTATION 
-            //TO CONTINUE FROM HERE TO CREATE NEW ORDER, SET DELIVERY STATUS, SEND RECEIPT PDF
-
-
-            //TO CONTINUE HERE TO MAKE ORDER MANAGEMENT
-            let stripeSession = event.data.object
-            console.log(stripeSession);
-
-            const address = stripeSession.customer_details.address
-            // address is currently null except country
-            const invoice = stripeSession.invoice
-            // need to enable invoice_creation to enabled: true
-
-            const metadata = stripeSession.metadata;
-
-            const payment_intent = stripeSession.payment_intent;
-            // console.log(payment_intent);
-
-            const payment_method_types = stripeSession.payment_method_types[0];
-            // console.log(payment_method_types);
-            const payment_status = stripeSession.payment_status;
+//         if (event?.type == "checkout.session.completed") {
+//             console.log(event.data.object)
+//             // console.log("the webhook route ran")
+//             //SECOND PART OF PROJECT 3 IMPLEMENTATION 
+//             //TO CONTINUE FROM HERE TO CREATE NEW ORDER, SET DELIVERY STATUS, SEND RECEIPT PDF
 
 
-            const shipping_address_collection = stripeSession.shipping_address_collection;
+//             //TO CONTINUE HERE TO MAKE ORDER MANAGEMENT
+//             let stripeSession = event.data.object
+//             console.log(stripeSession);
+
+//             const address = stripeSession.customer_details.address
+//             // address is currently null except country
+//             const invoice = stripeSession.invoice
+//             // need to enable invoice_creation to enabled: true
+
+//             const metadata = stripeSession.metadata;
+
+//             const payment_intent = stripeSession.payment_intent;
+//             // console.log(payment_intent);
+
+//             const payment_method_types = stripeSession.payment_method_types[0];
+//             // console.log(payment_method_types);
+//             const payment_status = stripeSession.payment_status;
 
 
-            const status = stripeSession.status;
-
-        }
-
-        res.sendStatus(200);
+//             const shipping_address_collection = stripeSession.shipping_address_collection;
 
 
+//             const status = stripeSession.status;
+
+//         }
+
+//         res.sendStatus(200);
 
 
-    }
-)
+
+
+//     }
+// )
 
 
 
