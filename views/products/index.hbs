@@ -61,11 +61,18 @@
                 <td>{{this.width}}</td>
                 <td>{{this.height}}</td>
                 <td>{{this.shape}}</td>
-                <td>{{this.date_created}}</td>
-                <td>{{this.last_updated}}</td>
+                <td>
+                    {{#changeDate this.date_created}}
+                    {{/changeDate}}
+                </td>
+                <td>
+                    {{#changeDate this.last_updated}}
+                    {{/changeDate}}
+                </td>
                 <td>{{this.base.base}}</td>
                 <td>{{this.oil.oil}}</td>
                 <td>{{this.type.type}}</td>
+
                 <td>
                     {{#each this.purposes}}
                     <div class="span badge bg-success"> {{this.purpose}}</div>
@@ -86,7 +93,6 @@
                 </td>
                 <td>
                     <a href="products/{{this.id}}/variants" class="btn btn-warning btn-sm" />Variant</a>
-
 
                 </td>
 

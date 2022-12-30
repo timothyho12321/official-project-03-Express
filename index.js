@@ -9,6 +9,13 @@ const csrf = require('csurf');
 
 require("dotenv").config();
 
+
+hbs.handlebars.registerHelper("changeDate", function (date) {
+    return date.toISOString().slice(0, 10);
+
+})
+
+
 // create an instance of express app
 let app = express();
 
@@ -60,11 +67,11 @@ app.use(function (req, res, next) {
 const csrfInstance = csrf();
 app.use(function (req, res, next) {
 
-  if (req.url.slice(0,5)=="/api/") {
-    return next();
+    if (req.url.slice(0, 5) == "/api/") {
+        return next();
 
-  }
-  csrfInstance(req, res, next);
+    }
+    csrfInstance(req, res, next);
 
 })
 
@@ -107,8 +114,8 @@ const cloudinaryRoutes = require('./routes/cloudinary')
 
 // define the api routes
 const api = {
-    cartForShopping: require('./routes/api/cart')
-
+    cartForShopping: require('./routes/api/cart'),
+    checkOutCart: require('./routes/api/checkout_internal')
 }
 
 
@@ -121,7 +128,7 @@ async function main() {
 
     // define the api routes
     app.use('/api/cartforshopping', express.json(), api.cartForShopping)
-
+    app.use('/api/cartcheckout', express.json(), api.checkOutCart)
 }
 
 main();
