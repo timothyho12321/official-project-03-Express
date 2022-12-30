@@ -89,7 +89,7 @@ router.get('/', async (req, res) => {
     // step 3: register the session
 
     let stripeSession = await Stripe.checkout.sessions.create(payment)
-    console.log(stripeSession);
+    // console.log(stripeSession);
     console.log("Reached until checkout render")
 
 
@@ -127,6 +127,8 @@ router.post('/update_payment', express.raw({ type: 'application/json' }),
         // WHY IS THE EVENT NOT RUNNING. NO EVENT DATA
 
         try {
+
+            console.log("entered the try catch route")
             event = Stripe.webhooks.constructEvent(payload, signature, endpointSecret);
 
             console.log("event1", event)
