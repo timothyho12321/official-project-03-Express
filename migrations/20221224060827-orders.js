@@ -47,6 +47,46 @@ exports.up = function(db) {
     },
     'delivery_date': {
       type: "datetime"
+    },
+    'shipping_country': {
+      type: "string",
+      length: 30,
+      notNull: true
+    },
+    'shipping_address_1': {
+      type: "string",
+      length: 150,
+      notNull: true
+    },
+    'shipping_address_2': {
+      type: "string",
+      length: 150,
+      notNull: true
+    },
+    'billing_postal_code': {
+      type: "string",
+      length: 30,
+      notNull: true
+    },
+    'billing_country': {
+      type: "string",
+      length: 20,
+      notNull: true
+    },
+    'billing_address_1': {
+      type: "string",
+      length: 150,
+      notNull: true
+    },
+    'billing_address_2': {
+      type: "string",
+      length: 150,
+      notNull: true
+    },
+    'billing_postal_code': {
+      type: "string",
+      length: 15,
+      notNull: true
     }
     
 

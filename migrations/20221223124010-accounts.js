@@ -54,26 +54,26 @@ exports.up = function (db) {
     'modified_date': {
       type: "date",
     },
-    'shipping_country': {
-      type: "string",
-      length: 20,
-      notNull: true
-    },
-    'shipping_address_1': {
-      type: "string",
-      length: 150,
-      notNull: true
-    },
-    'shipping_address_2': {
-      type: "string",
-      length: 150,
-      notNull: true
-    },
-    'shipping_postal_code': {
-      type: "string",
-      length: 15,
-      notNull: true
-    }
+    // 'shipping_country': {
+    //   type: "string",
+    //   length: 20,
+    //   notNull: true
+    // },
+    // 'shipping_address_1': {
+    //   type: "string",
+    //   length: 150,
+    //   notNull: true
+    // },
+    // 'shipping_address_2': {
+    //   type: "string",
+    //   length: 150,
+    //   notNull: true
+    // },
+    // 'shipping_postal_code': {
+    //   type: "string",
+    //   length: 15,
+    //   notNull: true
+    // }
 
   })
 
