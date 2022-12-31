@@ -116,7 +116,8 @@ const cloudinaryRoutes = require('./routes/cloudinary')
 const api = {
     cartForShopping: require('./routes/api/cart'),
     checkOutCart: require('./routes/api/checkout_internal'),
-    checkOutStripe: require('./routes/api/checkout_stripe')
+    checkOutStripe: require('./routes/api/checkout_stripe'),
+    products: require('./routes/api/products')
 
 }
 
@@ -130,9 +131,9 @@ async function main() {
 
     // define the api routes
     app.use('/api/cartforshopping', express.json(), api.cartForShopping)
-    app.use('/api/cartcheckout',  api.checkOutCart)
-    app.use('/api/cartcheckout/update_payment',  api.checkOutStripe)
-
+    app.use('/api/cartcheckout', api.checkOutCart)
+    app.use('/api/cartcheckout/update_payment', api.checkOutStripe)
+    app.use('/api/products', express.json(), api.products)
 }
 
 main();

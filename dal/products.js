@@ -1,5 +1,5 @@
 const express = require("express");
-const { Oil, Smell, Purpose, Type, Base, Variant } = require("../models");
+const { Oil, Smell, Purpose, Type, Base, Variant, Soap } = require("../models");
 
 
 async function getAllOils() {
@@ -49,6 +49,17 @@ async function getAllTypes() {
 }
 
 
+async function getAllProducts() {
+
+    const allProducts = await Soap.collection().fetch({
+        'withRelated': ['base', 'type', 'oil', 'purposes', 'smells']
+    })
+
+    return allProducts;
+
+}
+
+
 
 async function getVariantById(variantId) {
 
@@ -85,5 +96,6 @@ module.exports =
     getAllBases,
     getAllTypes,
     getVariantById,
-    updateVariantStock
+    updateVariantStock,
+    getAllProducts
 }
