@@ -599,16 +599,16 @@ router.post("/:soap_id/variants/:variant_id/update", async function (req, res) {
     variantForm.handle(req, {
         'success': async function (form) {
 
-            const variantObject = new Variant();
+
 
             let newObject = form.data
             newObject.soap_id = soapId
             // console.log("new object",newObject);
 
-            variantObject.set(newObject);
-            await variantObject.save();
+            findVariant.set(newObject);
+            await findVariant.save();
 
-            req.flash("success_messages", `Variant for the ${variantObject.get('name')} is updated.`)
+            req.flash("success_messages", `Variant for the ${findVariant.get('name')} is updated.`)
 
             res.redirect(`/products/${soapId}/variants`)
         },
