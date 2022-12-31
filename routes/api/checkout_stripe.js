@@ -1,5 +1,7 @@
 const express = require('express');
 const orderDAL = require('../../dal/orders');
+const { updateVariantStock } = require('../../dal/products');
+const CartServices = require('../../services/cart_items');
 const router = express.Router();
 
 const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
@@ -55,7 +57,7 @@ router.post('/', express.raw({ type: 'application/json' }),
         }
         console.log("event2", event);
 
-        if (event?.type == "checkout.session.completed") {
+        if (event.type == "checkout.session.completed") {
             console.log(event.data.object)
             // console.log("the webhook route ran")
             //SECOND PART OF PROJECT 3 IMPLEMENTATION 
@@ -193,8 +195,35 @@ router.post('/', express.raw({ type: 'application/json' }),
                 const makeOrderItem = await orderDAL.addOrderItem(eachLineItem);
                 console.log("each order item", makeOrderItem.toJSON());
 
+                // UPDATE STOCK NUMBER
+
+                // console.log("currentAccountId", currentAccountId)
+
+                const lineItemVariantId = eachLineItem.variant_id;
+                // console.log("lineItemVariantId", lineItemVariantId)
+
+                const classForLineItem = new CartServices(currentAccountId)
+                const checkVariantStock = await classForLineItem.checkVariantStock(lineItemVariantId)
+                // console.log("checkVariantStock", checkVariantStock)
+
+
+                purchaseQuantity = eachLineItem.quantity
+                console.log("purchaseQuantity", purchaseQuantity)
+
+
+                currentQuantity = checkVariantStock - purchaseQuantity;
+                console.log("currentQuantity", currentQuantity)
+
+                await updateVariantStock(lineItemVariantId, currentQuantity);
+
+                const result = await classForLineItem.removeOneItemFromCart(lineItemVariantId);
+                // console.log(result);
+
             }
-            // STOP HERE TO CONTINUE UPDATE STOCK 
+
+
+
+
 
         }
 
