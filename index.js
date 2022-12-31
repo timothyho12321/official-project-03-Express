@@ -109,7 +109,11 @@ app.use(function (req, res, next) {
 const landingRoutes = require('./routes/landing')
 const productRoutes = require('./routes/products')
 const accountRoutes = require('./routes/accounts')
-const cloudinaryRoutes = require('./routes/cloudinary')
+const cloudinaryRoutes = require('./routes/cloudinary');
+
+// Middlewares and validation 
+const validation = require("./middlewares/validationMiddleWare");
+const productSchema = require("./validations/productValidation");
 
 
 // define the api routes
