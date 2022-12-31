@@ -1,4 +1,5 @@
-const cartDataLayer = require('../dal/cart_items')
+const cartDataLayer = require('../dal/cart_items');
+const productDataLayer = require('../dal/products');
 
 class CartServices {
     constructor(account_id) {
@@ -27,6 +28,30 @@ class CartServices {
 
     async getCart() {
         return await cartDataLayer.getCart(this.account_id);
+    }
+
+
+    async checkVariantStock(variantId) {
+        const retrieveVariant = await productDataLayer.getVariantById(variantId)
+        const getVariantStockNum = parseInt(retrieveVariant.get('stock'));
+
+        return getVariantStockNum;
+
+    }
+
+    async removeOneItemFromCart(variantId) {
+
+        //check if item exists
+        const getCartItemByAccountAndVariant = await cartDataLayer.getCartItemByAccountAndVariant(this.account_id, variantId)
+
+        if (getCartItemByAccountAndVariant) {
+            cartDataLayer.removeFromCart(this.account_id, variantId)
+            return true;
+        } else {
+            return false;
+        }
+
+
     }
 }
 

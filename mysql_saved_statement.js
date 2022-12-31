@@ -52,45 +52,45 @@ VALUES(
 
 
 INSERT INTO purposes_soaps(purpose_id, soap_id
-    )
-    VALUES(
-        2, 1
-    );
+)
+VALUES(
+    2, 1
+);
 
 
     INSERT INTO smells_soaps(smell_id, soap_id
-        )
-        VALUES(
-            3, 1
-        );
+)
+VALUES(
+    3, 1
+);
 
 
         INSERT INTO variants(image_url,
-            thumbnail_url, stock, name, last_updated, color_id,
-            soap_id
-        )
-        VALUES(
-            "www.google.com", "www.youtube.com",
-            3, "Big Size Soap", "2022-10-10", 5, 28
-        );
+    thumbnail_url, stock, name, last_updated, color_id,
+    soap_id
+)
+VALUES(
+    "www.google.com", "www.youtube.com",
+    3, "Big Size Soap", "2022-10-10", 5, 28
+);
         
 
         INSERT INTO cart_items(quantity, account_id, variant_id
-            )
-            VALUES(
-                1, 5, 9
-            );
+)
+VALUES(
+    1, 5, 9
+);
 
 
             INSERT INTO order_items(quantity, order_id, variant_id
-                )
-                VALUES(
-                    3, 2, 1
-                );
+)
+VALUES(
+    3, 2, 1
+);
 
-            
-    
 
+    // Update stock number
+                UPDATE variants SET stock = 500 where id = 1;
 
 
 
