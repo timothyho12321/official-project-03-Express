@@ -94,6 +94,17 @@ VALUES(
 
 
 
+                // Insert into blacklisted tokens
+
+                INSERT INTO blacklisted_tokens(token, date_created
+                    )
+                    VALUES(
+                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdF9uYW1lIjoiYXBpIiwibGFzdF9uYW1lIjoidXNlciIsImlkIjoxMiwiZW1haWwiOiJhcGl1c2VyQGdtYWlsLmNvbSIsInJvbGVfaWQiOjMsImlhdCI6MTY3MjU2NDAwMiwiZXhwIjoxNjczMTY4ODAyfQ.KHb7RmK17_LDywHfAZgYysD7X8xN_YFEynqH_JgWMQw",
+                        "2022-10-12"
+                        
+                    );
+
+
 
 INSERT INTO types(type
 )
