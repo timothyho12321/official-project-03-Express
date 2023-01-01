@@ -219,6 +219,12 @@ router.get("/success", function (req, res) {
     })
 })
 
+router.get("/cancelled", function (req, res) {
+    res.json({
+        "message": "Stripe payment failed to proceed. Please try checking out again."
+    })
+})
+
 
 module.exports = router
 
