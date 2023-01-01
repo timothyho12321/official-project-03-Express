@@ -14,8 +14,8 @@ const searchSchema = yup.object({
     width: yup.number(),
     height: yup.number(),
     shape: yup.string(),
-    // smells: yup.number(),
-    // oils: yup.number(),
+    smells: yup.number(),
+    oils: yup.number(),
 
 })
 

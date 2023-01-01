@@ -121,7 +121,8 @@ const api = {
     cartForShopping: require('./routes/api/cart'),
     checkOutCart: require('./routes/api/checkout_internal'),
     checkOutStripe: require('./routes/api/checkout_stripe'),
-    products: require('./routes/api/products')
+    products: require('./routes/api/products'),
+    frontEndAccount: require('./routes/api/accounts')
 
 }
 
@@ -137,7 +138,8 @@ async function main() {
     app.use('/api/cartforshopping', express.json(), api.cartForShopping)
     app.use('/api/cartcheckout', api.checkOutCart)
     app.use('/api/cartcheckout/update_payment', api.checkOutStripe)
-    app.use('/api/products', express.json(), api.products)
+    app.use('/api/products', express.json(), api.products),
+    app.use('/api/accounts', express.json(), api.frontEndAccount)
 }
 
 main();
