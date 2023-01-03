@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors')
 const hbs = require("hbs");
 const wax = require("wax-on");
 const session = require('express-session');
@@ -8,7 +9,6 @@ const csrf = require('csurf');
 
 
 require("dotenv").config();
-
 
 hbs.handlebars.registerHelper("changeDate", function (date) {
     return date.toISOString().slice(0, 10);
@@ -21,6 +21,9 @@ let app = express();
 
 // set the view engine
 app.set("view engine", "hbs");
+
+//enable cors
+app.use(cors());
 
 // static folder
 app.use(express.static("public"));
@@ -109,15 +112,21 @@ app.use(function (req, res, next) {
 const landingRoutes = require('./routes/landing')
 const productRoutes = require('./routes/products')
 const accountRoutes = require('./routes/accounts')
-const cloudinaryRoutes = require('./routes/cloudinary')
+const cloudinaryRoutes = require('./routes/cloudinary');
+const orderRoutes = require('./routes/orders')
+
+// Middlewares and validation 
+const validation = require("./middlewares/validationMiddleWare");
+const productSchema = require("./validations/productValidation");
 
 
 // define the api routes
 const api = {
     cartForShopping: require('./routes/api/cart'),
     checkOutCart: require('./routes/api/checkout_internal'),
-    checkOutStripe: require('./routes/api/checkout_stripe')
-
+    checkOutStripe: require('./routes/api/checkout_stripe'),
+    products: require('./routes/api/products'),
+    frontEndAccount: require('./routes/api/accounts')
 }
 
 
@@ -127,12 +136,15 @@ async function main() {
     app.use('/products', productRoutes);
     app.use('/accounts', accountRoutes);
     app.use('/cloudinary', cloudinaryRoutes);
+    app.use('/cloudinary', cloudinaryRoutes);
+    app.use('/orders', orderRoutes)
 
     // define the api routes
     app.use('/api/cartforshopping', express.json(), api.cartForShopping)
-    app.use('/api/cartcheckout',  api.checkOutCart)
-    app.use('/api/cartcheckout/update_payment',  api.checkOutStripe)
-
+    app.use('/api/cartcheckout', api.checkOutCart)
+    app.use('/api/cartcheckout/update_payment', api.checkOutStripe)
+    app.use('/api/products', express.json(), api.products),
+    app.use('/api/accounts', express.json(), api.frontEndAccount)
 }
 
 main();

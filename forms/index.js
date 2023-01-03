@@ -225,14 +225,7 @@ const createRegisterForm = () => {
             },
             widget: widgets.date()
         }),
-        'role_id': fields.number({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            },
-            validators: [validators.integer()]
-        })
+
     })
 }
 
@@ -420,11 +413,61 @@ const createVariantForm = (allColors = []) => {
 }
 
 
+const createOrderUpdateForm = (allOrderStatuses=[]) => {
+    return forms.create({
+        'shipping_address_1': fields.string({
+            label: "Shipping Address",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'shipping_address_2': fields.string({
+            label: "Shipping Address 2",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'shipping_postal_code': fields.string({
+            label: "Shipping Postal Code",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'delivery_date': fields.date({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.date()
+        }),
+        'order_status_id': fields.number({
+            label: "Order Status",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: allOrderStatuses
+        }),
+    })
+
+}
+
+
 module.exports = {
     bootstrapField,
     createProductForm,
     createRegisterForm,
     createLoginForm,
     createSearchForm,
-    createVariantForm
+    createVariantForm,
+    createOrderUpdateForm
 }

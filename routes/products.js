@@ -3,7 +3,9 @@ const dataLayer = require("../dal/products");
 
 
 const { createProductForm, bootstrapField, createSearchForm, createVariantForm } = require("../forms");
+const validation = require("../middlewares/validationMiddleWare");
 const { Account, Soap, Order, Base, Variant, CartItem, OrderItem, Type, Smell, Purpose, Oil, Color } = require("../models");
+const productSchema = require("../validations/productValidation");
 const router = express.Router();
 
 
@@ -82,10 +84,14 @@ router.get('/', async (req, res) => {
                 })
         },
         'empty': async function (form) {
-            const products = await q.fetch({
-                withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
-            })
+            // const products = await q.fetch({
+            //     withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
+            // })
 
+            //Refactoring
+            const products = await dataLayer.getAllProducts();
+            console.log("enter empty route");
+            console.log(products.toJSON());
 
             res.render(
                 'products/index',

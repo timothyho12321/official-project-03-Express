@@ -1,0 +1,27 @@
+{{#extends 'base'}}
+
+
+{{#block "content"}}
+
+<h1>Update your customer's current order</h1>
+
+
+<form method="POST">
+
+
+    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+    {{{form}}}
+
+    <button class="btn btn-success mt-3">Update Product</button>
+
+</form>
+
+
+{{/block}}
+
+
+
+
+
+
+{{/extends}}
