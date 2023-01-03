@@ -1,4 +1,4 @@
-const { Order } = require("../models")
+const { Order, OrderStatus } = require("../models")
 
 
 const addOrder = async (orderDetails) => {
@@ -29,7 +29,7 @@ const getAllOrders = async () => {
 
 
 const getOrderUsingId = async (orderId) => {
-    
+
     const order = await Order.where({
         'id': orderId
     }).fetch({
@@ -42,6 +42,15 @@ const getOrderUsingId = async (orderId) => {
 }
 
 
+const getAllOrderStatus = async () => {
+    const allOrderStatus = await OrderStatus.fetchAll().map(o =>
+        [o.get('id'), o.get('status')])
+
+    return allOrderStatus;
+
+}
+
+
 
 
 module.exports =
@@ -49,5 +58,6 @@ module.exports =
     addOrder,
     addOrderItem,
     getAllOrders,
-    getOrderUsingId
+    getOrderUsingId,
+    getAllOrderStatus
 }

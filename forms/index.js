@@ -447,14 +447,6 @@ const createOrderUpdateForm = (allOrderStatuses=[]) => {
             },
             widget: widgets.date()
         }),
-        'modified_date': fields.date({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            },
-            widget: widgets.date()
-        }),
         'order_status_id': fields.number({
             label: "Order Status",
             required: true,
