@@ -13,6 +13,12 @@ const getHashedPassword = (password) => {
     return hash;
 }
 
+// router.get('/', (req, res) => {
+
+//     res.send("test account")
+
+
+// })
 
 router.get('/register', (req, res) => {
 
@@ -37,6 +43,8 @@ router.post('/register', (req, res) => {
             const { confirm_password, ...otherData } = form.data
 
             otherData.password = getHashedPassword(otherData.password)
+            // Only allow staff acount to be created on backend
+            otherData.role_id = 2;
             console.log(otherData);
             account.set(otherData)
 

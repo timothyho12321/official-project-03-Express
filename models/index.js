@@ -81,7 +81,10 @@ const Order = bookshelf.model('Order', {
     },
     account() {
         return this.belongsTo('Account')
-    }
+    },
+    order_items() {
+        return this.belongsTo('OrderItem')
+    },
 });
 
 
@@ -134,7 +137,8 @@ const OrderItem = bookshelf.model('OrderItem', {
     },
     variant() {
         return this.belongsTo('Variant')
-    }
+    },
+    
 });
 
 

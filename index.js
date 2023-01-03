@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors')
 const hbs = require("hbs");
 const wax = require("wax-on");
 const session = require('express-session');
@@ -8,7 +9,6 @@ const csrf = require('csurf');
 
 
 require("dotenv").config();
-
 
 hbs.handlebars.registerHelper("changeDate", function (date) {
     return date.toISOString().slice(0, 10);
@@ -21,6 +21,9 @@ let app = express();
 
 // set the view engine
 app.set("view engine", "hbs");
+
+//enable cors
+app.use(cors());
 
 // static folder
 app.use(express.static("public"));
@@ -110,6 +113,7 @@ const landingRoutes = require('./routes/landing')
 const productRoutes = require('./routes/products')
 const accountRoutes = require('./routes/accounts')
 const cloudinaryRoutes = require('./routes/cloudinary');
+const orderRoutes = require('./routes/orders')
 
 // Middlewares and validation 
 const validation = require("./middlewares/validationMiddleWare");
@@ -123,7 +127,6 @@ const api = {
     checkOutStripe: require('./routes/api/checkout_stripe'),
     products: require('./routes/api/products'),
     frontEndAccount: require('./routes/api/accounts')
-
 }
 
 
@@ -133,6 +136,8 @@ async function main() {
     app.use('/products', productRoutes);
     app.use('/accounts', accountRoutes);
     app.use('/cloudinary', cloudinaryRoutes);
+    app.use('/cloudinary', cloudinaryRoutes);
+    app.use('/orders', orderRoutes)
 
     // define the api routes
     app.use('/api/cartforshopping', express.json(), api.cartForShopping)
