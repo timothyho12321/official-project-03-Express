@@ -2,15 +2,10 @@ const express = require("express");
 const orderDAL = require("../dal/orders");
 const router = express.Router()
 const hbs = require("hbs");
-const { createOrderUpdateForm, bootstrapField } = require("../forms");
+const { createOrderUpdateForm, bootstrapField, ordersSearchForm } = require("../forms");
+const { Order } = require("../models");
 
 router.get('/', async (req, res) => {
-
-
-    const allOrders = await orderDAL.getAllOrders()
-
-    console.log(allOrders.toJSON());
-
     // res.json({'orders':allOrders.toJSON()})
 
     hbs.handlebars.registerHelper("changeDateTime", function (date) {
@@ -19,9 +14,105 @@ router.get('/', async (req, res) => {
     })
     //can use a helper to print different card for tags
 
+    const allOrderStatuses = await orderDAL.getAllOrderStatus()
 
-    res.render('orders/index',
-        { 'allOrders': allOrders.toJSON() })
+    const makeOrderForm = ordersSearchForm(allOrderStatuses)
+
+    const q = Order.collection();
+
+    makeOrderForm.handle(req, {
+        'success': async function (form) {
+            console.log("entered success route");
+            console.log(form.data);
+
+           
+            // console.log("form date", form.data.delivery_date)
+            // if (form.data.delivery_date) {
+            //     q.where('order_date', '>=', form.data.delivery_date)
+
+            // }
+
+            if (form.data.min_cost) {
+                q.where('total_cost', '>=', form.data.min_cost)
+
+            }
+            if (form.data.max_cost) {
+                q.where('total_cost', '<=', form.data.max_cost)
+
+            }
+            if (form.data.payment_type) {
+                q.where('payment_type', '=', form.data.payment_type)
+
+            }
+            
+            if (form.data.order_status_id) {
+                q.where('order_status_id', '=', form.data.order_status_id)
+
+            }
+
+            // if (form.data.smells) {
+            //     q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
+            //         .where('smell_id', 'in', form.data.smells.split(','))
+            // }
+
+            // const allOrders = await q.fetch({
+            //     withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
+            // })
+            const allOrders = await q.fetch({
+                'withRelated': ['order_items', 'account', 'order_status']
+            })
+
+            console.log(allOrders.toJSON())
+
+            res.render('orders/index',
+                {
+                    'allOrders': allOrders.toJSON(),
+                    'form': makeOrderForm.toHTML(bootstrapField)
+                })
+
+
+        },
+        'empty': async function (form) {
+
+
+
+            const allOrders = await orderDAL.getAllOrders()
+
+            //Refactoring
+            // const products = await dataLayer.getAllProducts();
+            console.log("enter empty route");
+            // console.log(products.toJSON());
+
+
+            // res.send("empty route entered");
+
+
+            res.render('orders/index',
+                {
+                    'allOrders': allOrders.toJSON(),
+                    'form': makeOrderForm.toHTML(bootstrapField)
+                })
+
+        },
+        'error': async function (form) {
+
+            const allOrders = await orderDAL.getAllOrders()
+
+
+            res.render('orders/index',
+                {
+                    'allOrders': allOrders.toJSON(),
+                    'form': form.toHTML(bootstrapField)
+                })
+
+        }
+
+    })
+
+
+
+
+
 
 
 })
@@ -76,19 +167,19 @@ router.post('/update/:order_id', async (req, res) => {
             //     ...form.data
             // }
             // console.log("modifiedObject", modifiedObject)
-            
 
-            let {...orderData} = form.data
+
+            let { ...orderData } = form.data
 
             order.set(orderData);
 
-            
+
             // order.set(modifiedObject); 
 
-                await order.save();
-                req.flash('success_messages', `Your order with 'ID: ${order.get('id')}' is updated with success.`)
-                res.redirect('/orders');
-    
+            await order.save();
+            req.flash('success_messages', `Your order with 'ID: ${order.get('id')}' is updated with success.`)
+            res.redirect('/orders');
+
         }
         ,
         'error': function (form) {
