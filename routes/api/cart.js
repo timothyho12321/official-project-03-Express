@@ -18,9 +18,7 @@ router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
     // console.log("entered route for getcartitems")
 
     res.status(200);
-    res.json({
-        'currentCart': cartItems
-    })
+    res.json(cartItems)
 
 })
 
