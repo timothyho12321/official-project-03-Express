@@ -1,13 +1,16 @@
 const express = require('express');
+const { checkIfAuthenticatedJWT } = require('../../middlewares/validationJWT');
 const router = express.Router()
 const CartServices = require('../../services/cart_items');
 
-router.get('/', async (req, res) => {
+router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
 
     // WHAT IS THE REQ.ACCOUNT.ID from???
     // const currentAccountId = req.account.id;
 
-    const currentAccountId = 2;
+    // OLD const currentAccountId = 2;
+    const currentAccountId = req.account.id
+    console.log("currentAccountId", currentAccountId)
 
     let classCartServices = new CartServices(currentAccountId);
     const cartItems = await classCartServices.getCart(currentAccountId)
@@ -79,14 +82,14 @@ router.post('/:variant_id/add', async (req, res) => {
 })
 
 
-router.put('/:variant_id/update' , async (req , res) => {
-    
-     // const currentAccountId = req.account.id
-     const currentAccountId = 2;
-     const variantId = parseInt(req.params.variant_id)
-     // console.log(variantId);
-     const newQuantity = parseInt(req.body.quantity)
-     // console.log(quantity);
+router.put('/:variant_id/update', async (req, res) => {
+
+    // const currentAccountId = req.account.id
+    const currentAccountId = 2;
+    const variantId = parseInt(req.params.variant_id)
+    // console.log(variantId);
+    const newQuantity = parseInt(req.body.quantity)
+    // console.log(quantity);
 
 
     let checkError = false;
@@ -123,14 +126,14 @@ router.put('/:variant_id/update' , async (req , res) => {
 })
 
 
-router.delete('/:variant_id/delete' , async (req , res) => {
-    
-     // const currentAccountId = req.account.id
-     const currentAccountId = 2;
+router.delete('/:variant_id/delete', async (req, res) => {
 
-     const variantId = parseInt(req.params.variant_id);
-     // console.log(variantId);
-     
+    // const currentAccountId = req.account.id
+    const currentAccountId = 2;
+
+    const variantId = parseInt(req.params.variant_id);
+    // console.log(variantId);
+
 
     let checkError = false;
     if (!currentAccountId || !variantId) {

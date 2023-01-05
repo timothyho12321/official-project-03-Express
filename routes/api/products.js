@@ -99,7 +99,10 @@ router.get('/search', validationReq(searchSchema), async (req, res) => {
 })
 
 router.get('/:product_id/variants' , async (req , res) => {
-    const variants = await productDAL.getVariantById(req.params.product_id)
+    // const variants = await productDAL.getVariantById(req.params.product_id)
+    
+    const variants = await productDAL.getVariantByProductId(req.params.product_id)
+    
     console.log(variants.toJSON());
     res.status(200)
     res.json(variants)
