@@ -35,7 +35,7 @@ router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
 
 
 
-router.post('/:variant_id/add', async (req, res) => {
+router.post('/:variant_id/add', checkIfAuthenticatedJWT, async (req, res) => {
     console.log("entered route for addcartitems")
 
     // const currentAccountId = req.account.id
@@ -80,10 +80,12 @@ router.post('/:variant_id/add', async (req, res) => {
 })
 
 
-router.put('/:variant_id/update', async (req, res) => {
+router.put('/:variant_id/update',checkIfAuthenticatedJWT,  async (req, res) => {
 
-    // const currentAccountId = req.account.id
-    const currentAccountId = 2;
+    console.log("route for variant update entered.")
+    const currentAccountId = req.account.id
+   
+    // const currentAccountId = 2;
     const variantId = parseInt(req.params.variant_id)
     // console.log(variantId);
     const newQuantity = parseInt(req.body.quantity)
