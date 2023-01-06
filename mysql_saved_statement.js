@@ -93,6 +93,9 @@ VALUES(
                 UPDATE variants SET stock = 500 where id = 1;
 
 
+                  // Update payment_type
+                  UPDATE orders SET payment_type = "grab" where id = 14;
+
 
                 // Insert into blacklisted tokens
 

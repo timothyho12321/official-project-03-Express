@@ -1,13 +1,16 @@
 const express = require('express');
+const { checkIfAuthenticatedJWT } = require('../../middlewares/validationJWT');
 const router = express.Router()
 const CartServices = require('../../services/cart_items');
 
-router.get('/', async (req, res) => {
+router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
 
     // WHAT IS THE REQ.ACCOUNT.ID from???
     // const currentAccountId = req.account.id;
 
-    const currentAccountId = 2;
+    // OLD const currentAccountId = 2;
+    const currentAccountId = req.account.id
+    console.log("currentAccountId", currentAccountId)
 
     let classCartServices = new CartServices(currentAccountId);
     const cartItems = await classCartServices.getCart(currentAccountId)
@@ -15,9 +18,7 @@ router.get('/', async (req, res) => {
     // console.log("entered route for getcartitems")
 
     res.status(200);
-    res.json({
-        'currentCart': cartItems
-    })
+    res.json(cartItems)
 
 })
 
@@ -34,11 +35,12 @@ router.get('/', async (req, res) => {
 
 
 
-router.post('/:variant_id/add', async (req, res) => {
+router.post('/:variant_id/add', checkIfAuthenticatedJWT, async (req, res) => {
     console.log("entered route for addcartitems")
 
-    // const currentAccountId = req.account.id
-    const currentAccountId = 2;
+    const currentAccountId = req.account.id
+    // const currentAccountId = 2;
+    
     const variantId = parseInt(req.params.variant_id)
     // console.log(variantId);
     const quantity = parseInt(req.body.quantity)
@@ -79,14 +81,18 @@ router.post('/:variant_id/add', async (req, res) => {
 })
 
 
-router.put('/:variant_id/update' , async (req , res) => {
+router.put('/:variant_id/update',checkIfAuthenticatedJWT,  async (req, res) => {
+
+    // console.log("route for variant update entered.")
+    const currentAccountId = req.account.id
+    console.log("currentAccountId",currentAccountId)
     
-     // const currentAccountId = req.account.id
-     const currentAccountId = 2;
-     const variantId = parseInt(req.params.variant_id)
-     // console.log(variantId);
-     const newQuantity = parseInt(req.body.quantity)
-     // console.log(quantity);
+    // const currentAccountId = 2;
+    
+    const variantId = parseInt(req.params.variant_id)
+    console.log("variantId",variantId);
+    const newQuantity = parseInt(req.body.quantity)
+    console.log("newQuantity",newQuantity);
 
 
     let checkError = false;
@@ -104,6 +110,8 @@ router.put('/:variant_id/update' , async (req , res) => {
 
         let updateCartServices = new CartServices(currentAccountId);
         const updateCartQuantity = await updateCartServices.setQuantity(variantId, newQuantity)
+
+        // console.log("updateCartQuantity",updateCartQuantity)
 
         if (updateCartQuantity) {
 
@@ -123,14 +131,16 @@ router.put('/:variant_id/update' , async (req , res) => {
 })
 
 
-router.delete('/:variant_id/delete' , async (req , res) => {
-    
-     // const currentAccountId = req.account.id
-     const currentAccountId = 2;
+router.delete('/:variant_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
 
-     const variantId = parseInt(req.params.variant_id);
-     // console.log(variantId);
-     
+    const currentAccountId = req.account.id
+    console.log("currentAccountId",currentAccountId)
+    
+    // const currentAccountId = 2;
+
+    const variantId = parseInt(req.params.variant_id);
+    // console.log(variantId);
+
 
     let checkError = false;
     if (!currentAccountId || !variantId) {

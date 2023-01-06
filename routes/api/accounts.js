@@ -128,8 +128,6 @@ router.post('/login', async (req, res) => {
 
 router.get('/profile', checkIfAuthenticatedJWT, async (req, res) => {
 
-
-
     const loggedInAccount = req.account
     res.json({ loggedInAccount })
 

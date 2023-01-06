@@ -76,6 +76,20 @@ async function getVariantById(variantId) {
 }
 
 
+async function getVariantByProductId(productId) {
+
+    const variants = await Variant.where({
+        'soap_id': productId
+    }).fetchAll({
+        withRelated: ['soap'],
+        require: false
+    })
+
+
+    return variants;
+
+}
+
 async function updateVariantStock(variantId, currentQuantity) {
 
     const variant = await getVariantById(variantId);
@@ -88,6 +102,8 @@ async function updateVariantStock(variantId, currentQuantity) {
 }
 
 
+
+
 module.exports =
 {
     getAllOils,
@@ -97,5 +113,6 @@ module.exports =
     getAllTypes,
     getVariantById,
     updateVariantStock,
-    getAllProducts
+    getAllProducts,
+    getVariantByProductId
 }

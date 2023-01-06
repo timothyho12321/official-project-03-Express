@@ -462,6 +462,58 @@ const createOrderUpdateForm = (allOrderStatuses=[]) => {
 }
 
 
+const ordersSearchForm = (allOrderStatuses=[]) => {
+    return forms.create({
+       
+        // 'delivery_date': fields.date({
+        //     label: "Delivery Date Or Later",
+        //     required: false,
+        //     errorAfterField: true,
+        //     cssClasses: {
+        //         label: ['form-label']
+        //     },
+        //     widget: widgets.date()
+        // }),
+        'min_cost': fields.number({
+            label: "Min Cost",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer(), validators.min(0)]
+        }),
+        'max_cost': fields.number({
+            label: "Max Cost",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer(), validators.min(0)]
+        }),
+      
+        'payment_type': fields.string({
+            label: "Payment Type",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'order_status_id': fields.number({
+            label: "Order Status",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: allOrderStatuses
+        }),
+    })
+};
+
 module.exports = {
     bootstrapField,
     createProductForm,
@@ -469,5 +521,6 @@ module.exports = {
     createLoginForm,
     createSearchForm,
     createVariantForm,
-    createOrderUpdateForm
+    createOrderUpdateForm,
+    ordersSearchForm
 }
