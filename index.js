@@ -124,6 +124,8 @@ const productSchema = require("./validations/productValidation");
 const api = {
     cartForShopping: require('./routes/api/cart'),
     checkOutCart: require('./routes/api/checkout_internal'),
+    checkOutCartFE: require('./routes/api/checkout'),
+    
     checkOutStripe: require('./routes/api/checkout_stripe'),
     products: require('./routes/api/products'),
     frontEndAccount: require('./routes/api/accounts')
@@ -142,6 +144,8 @@ async function main() {
     // define the api routes
     app.use('/api/cartforshopping', express.json(), api.cartForShopping)
     app.use('/api/cartcheckout', api.checkOutCart)
+    app.use('/api/cartcheckoutreact', api.checkOutCartFE)
+    
     app.use('/api/cartcheckout/update_payment', api.checkOutStripe)
     app.use('/api/products', express.json(), api.products),
     app.use('/api/accounts', express.json(), api.frontEndAccount)

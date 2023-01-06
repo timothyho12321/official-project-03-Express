@@ -1,4 +1,4 @@
-const { Order, OrderStatus } = require("../models")
+const { Order, OrderStatus, OrderItem } = require("../models")
 
 
 const addOrder = async (orderDetails) => {
