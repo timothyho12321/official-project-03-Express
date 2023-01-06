@@ -38,8 +38,9 @@ router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
 router.post('/:variant_id/add', checkIfAuthenticatedJWT, async (req, res) => {
     console.log("entered route for addcartitems")
 
-    // const currentAccountId = req.account.id
-    const currentAccountId = 2;
+    const currentAccountId = req.account.id
+    // const currentAccountId = 2;
+    
     const variantId = parseInt(req.params.variant_id)
     // console.log(variantId);
     const quantity = parseInt(req.body.quantity)
@@ -82,14 +83,16 @@ router.post('/:variant_id/add', checkIfAuthenticatedJWT, async (req, res) => {
 
 router.put('/:variant_id/update',checkIfAuthenticatedJWT,  async (req, res) => {
 
-    console.log("route for variant update entered.")
+    // console.log("route for variant update entered.")
     const currentAccountId = req.account.id
-   
+    console.log("currentAccountId",currentAccountId)
+    
     // const currentAccountId = 2;
+    
     const variantId = parseInt(req.params.variant_id)
-    // console.log(variantId);
+    console.log("variantId",variantId);
     const newQuantity = parseInt(req.body.quantity)
-    // console.log(quantity);
+    console.log("newQuantity",newQuantity);
 
 
     let checkError = false;
@@ -107,6 +110,8 @@ router.put('/:variant_id/update',checkIfAuthenticatedJWT,  async (req, res) => {
 
         let updateCartServices = new CartServices(currentAccountId);
         const updateCartQuantity = await updateCartServices.setQuantity(variantId, newQuantity)
+
+        // console.log("updateCartQuantity",updateCartQuantity)
 
         if (updateCartQuantity) {
 
@@ -126,10 +131,12 @@ router.put('/:variant_id/update',checkIfAuthenticatedJWT,  async (req, res) => {
 })
 
 
-router.delete('/:variant_id/delete', async (req, res) => {
+router.delete('/:variant_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
 
-    // const currentAccountId = req.account.id
-    const currentAccountId = 2;
+    const currentAccountId = req.account.id
+    console.log("currentAccountId",currentAccountId)
+    
+    // const currentAccountId = 2;
 
     const variantId = parseInt(req.params.variant_id);
     // console.log(variantId);
