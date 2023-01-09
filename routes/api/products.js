@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 
 
 router.get('/search', validationReq(searchSchema), async (req, res) => {
-
+    console.log("route calledddd =>>>>>")
     const q = Soap.collection();
     let doSearch = false;
 
@@ -66,8 +66,8 @@ router.get('/search', validationReq(searchSchema), async (req, res) => {
         if (req.query.max_width) {
             q.where('width', '<=', req.query.max_width)
         }
-        if (req.query.oil_id) {
-            q.where('oil_id', '=', req.query.oil_id)
+        if (req.query.oils) {
+            q.where('oil_id', '=', req.query.oils)
         }
         if (req.query.smells) {
             q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
