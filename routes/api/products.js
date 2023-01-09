@@ -70,8 +70,22 @@ router.get('/search', validationReq(searchSchema), async (req, res) => {
             q.where('oil_id', '=', req.query.oils)
         }
         if (req.query.smells) {
+            // console.log("entered search smell route")
+            // console.log("see smell query",req.query.smells)
+
+            makeToString = req.query.smells.toString()
+            // console.log("makeToString",makeToString)
+            split = makeToString.split(',')
+            
+            // split = req.query.smells.split(',')
+            // console.log("split",split)
+
+
             q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
-                .where('smell_id', 'in', req.query.smells.split(','))
+            .where('smell_id', 'in', split)
+
+            // q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
+            //     .where('smell_id', 'in', req.query.smells.split(','))
         }
         const products = await q.fetch({
             withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
