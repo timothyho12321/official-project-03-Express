@@ -134,7 +134,9 @@ router.get('/profile', checkIfAuthenticatedJWT, async (req, res) => {
 })
 
 
-router.post('/refresh', async (req, res) => {
+router.post('/refresh', checkIfAuthenticatedJWT, async (req, res) => {
+
+    console.log("entered refresh route");
 
     let haveRefreshToken = req.body.refreshToken;
 
@@ -172,7 +174,13 @@ router.post('/refresh', async (req, res) => {
         }
 
         let accessToken = generateAccessToken(tokenData, process.env.TOKEN_SECRET, '15m');
-        res.send({ accessToken });
+        // res.send({ accessToken });
+        // res.json({ accessToken });
+
+        res.json({
+            'accessToken': accessToken,
+            'refreshToken': haveRefreshToken
+        })
 
     })
 

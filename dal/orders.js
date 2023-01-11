@@ -50,7 +50,19 @@ const getAllOrderStatus = async () => {
 
 }
 
+const getOrderUsingAccount = async (accountId) => {
 
+    console.log("accountId",accountId)
+    const order = await Order.where({
+        'account_id': accountId
+    }).fetchAll({
+        'withRelated': ['order_items', 'account', 'order_status'],
+        require: false
+    })
+
+    return order;
+
+}
 
 
 module.exports =
@@ -59,5 +71,6 @@ module.exports =
     addOrderItem,
     getAllOrders,
     getOrderUsingId,
-    getAllOrderStatus
+    getAllOrderStatus,
+    getOrderUsingAccount
 }
