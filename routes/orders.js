@@ -74,8 +74,6 @@ router.get('/', async (req, res) => {
         },
         'empty': async function (form) {
 
-
-
             const allOrders = await orderDAL.getAllOrders()
 
             //Refactoring

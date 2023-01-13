@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 
 
 router.get('/search', validationReq(searchSchema), async (req, res) => {
-
+    console.log("route calledddd =>>>>>")
     const q = Soap.collection();
     let doSearch = false;
 
@@ -66,12 +66,26 @@ router.get('/search', validationReq(searchSchema), async (req, res) => {
         if (req.query.max_width) {
             q.where('width', '<=', req.query.max_width)
         }
-        if (req.query.oil_id) {
-            q.where('oil_id', '=', req.query.oil_id)
+        if (req.query.oils) {
+            q.where('oil_id', '=', req.query.oils)
         }
         if (req.query.smells) {
+            // console.log("entered search smell route")
+            // console.log("see smell query",req.query.smells)
+
+            makeToString = req.query.smells.toString()
+            // console.log("makeToString",makeToString)
+            split = makeToString.split(',')
+            
+            // split = req.query.smells.split(',')
+            // console.log("split",split)
+
+
             q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
-                .where('smell_id', 'in', req.query.smells.split(','))
+            .where('smell_id', 'in', split)
+
+            // q.query('join', 'smells_soaps', 'soaps.id', 'soap_id')
+            //     .where('smell_id', 'in', req.query.smells.split(','))
         }
         const products = await q.fetch({
             withRelated: ['base', 'oil', 'type', 'purposes', 'smells']
