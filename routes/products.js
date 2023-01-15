@@ -3,6 +3,7 @@ const dataLayer = require("../dal/products");
 
 
 const { createProductForm, bootstrapField, createSearchForm, createVariantForm } = require("../forms");
+const { checkIfOwner } = require("../middlewares/validationJWT");
 const validation = require("../middlewares/validationMiddleWare");
 const { Account, Soap, Order, Base, Variant, CartItem, OrderItem, Type, Smell, Purpose, Oil, Color } = require("../models");
 const productSchema = require("../validations/productValidation");
@@ -157,7 +158,7 @@ router.get('/create', async (req, res) => {
 })
 
 
-router.post('/create', async (req, res) => {
+router.post('/create', checkIfOwner, async (req, res) => {
 
     const allSmells = await dataLayer.getAllSmells();
 
@@ -221,7 +222,7 @@ router.post('/create', async (req, res) => {
 
 //////////////////////////////////// START OF UPDATE ROUTE ////////////////
 
-router.get("/update/:soap_id", async function (req, res) {
+router.get("/update/:soap_id", checkIfOwner, async function (req, res) {
 
     const soapId = req.params.soap_id;
 
@@ -290,7 +291,7 @@ router.get("/update/:soap_id", async function (req, res) {
 
 
 
-router.post("/update/:soap_id", async function (req, res) {
+router.post("/update/:soap_id", checkIfOwner, async function (req, res) {
 
     const soapId = req.params.soap_id;
 
@@ -375,7 +376,7 @@ router.post("/update/:soap_id", async function (req, res) {
 //////////////////////////////////// START OF DELETE ROUTE ////////////////
 
 
-router.get('/delete/:soap_id', async function (req, res) {
+router.get('/delete/:soap_id', checkIfOwner, async function (req, res) {
 
     const soapId = req.params.soap_id
 
@@ -395,7 +396,7 @@ router.get('/delete/:soap_id', async function (req, res) {
 })
 
 
-router.post('/delete/:soap_id', async function (req, res) {
+router.post('/delete/:soap_id', checkIfOwner, async function (req, res) {
 
     const soapId = req.params.soap_id
 

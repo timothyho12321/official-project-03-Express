@@ -142,7 +142,7 @@ router.get("/update/:order_id", checkIfOwner, async (req, res) => {
     })
 })
 
-router.post('/update/:order_id', async (req, res) => {
+router.post('/update/:order_id', checkIfOwner,async (req, res) => {
 
     const order = await orderDAL.getOrderUsingId(req.params.order_id);
 
