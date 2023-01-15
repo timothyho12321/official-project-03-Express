@@ -45,7 +45,7 @@ router.post('/register', checkIfOwner, (req, res) => {
 
             otherData.password = getHashedPassword(otherData.password)
             // Only allow staff acount to be created on backend
-            otherData.role_id = 1;
+            otherData.role_id = 2;
             console.log(otherData);
             account.set(otherData)
 
