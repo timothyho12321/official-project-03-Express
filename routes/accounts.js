@@ -115,7 +115,7 @@ router.post('/login', (req, res) => {
                         email: accountLogin.get('email'),
                         role_id: accountLogin.get('role_id')
                     }
-                    console.log("check role id", req.session.user)
+                    // console.log("check role id", req.session.user)
 
                     req.flash("success_messages", `Welcome again, ${accountLogin.get("first_name")} ${accountLogin.get("last_name")}`)
 

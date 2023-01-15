@@ -4,6 +4,7 @@ const router = express.Router()
 const hbs = require("hbs");
 const { createOrderUpdateForm, bootstrapField, ordersSearchForm } = require("../forms");
 const { Order } = require("../models");
+const { checkIfOwner } = require("../middlewares/validationJWT");
 
 router.get('/', async (req, res) => {
     // res.json({'orders':allOrders.toJSON()})
@@ -115,7 +116,7 @@ router.get('/', async (req, res) => {
 
 })
 
-router.get("/update/:order_id", async (req, res) => {
+router.get("/update/:order_id", checkIfOwner, async (req, res) => {
 
     const order = await orderDAL.getOrderUsingId(req.params.order_id)
 
