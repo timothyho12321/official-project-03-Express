@@ -4,6 +4,7 @@ const router = express.Router()
 const crypto = require('crypto')
 const { createRegisterForm, bootstrapField, createLoginForm } = require("../forms");
 const { Account } = require("../models");
+const { checkIfOwner } = require("../middlewares/validationJWT");
 
 
 const getHashedPassword = (password) => {
@@ -32,7 +33,7 @@ router.get('/register', (req, res) => {
 })
 
 
-router.post('/register', (req, res) => {
+router.post('/register', checkIfOwner, (req, res) => {
 
     const registerForm = createRegisterForm();
 
