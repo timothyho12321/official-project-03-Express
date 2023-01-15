@@ -160,7 +160,11 @@ router.get('/profile', (req, res) => {
 })
 
 
-
+router.get('/logout' , (req, res)=>{
+    req.session.user = null;
+    req.flash("success_messages" , "You have logged out. Bye!")
+    res.redirect('/accounts/login')
+})
 
 
 module.exports = router
