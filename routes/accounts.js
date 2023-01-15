@@ -104,20 +104,21 @@ router.post('/login', (req, res) => {
                 req.flash("error_messages", "Unfortunately, you keyed in wrong login details.")
                 res.redirect('/accounts/login')
             } else {
-                
+
                 if (accountLogin.get('password') === getHashedPassword(form.data.password)) {
 
-                   
+
                     req.session.user = {
                         id: accountLogin.get('id'),
                         firstName: accountLogin.get('first_name'),
                         lastName: accountLogin.get('last_name'),
-                        email: accountLogin.get('email')
-
+                        email: accountLogin.get('email'),
+                        role_id: accountLogin.get('role_id')
                     }
+                    console.log("check role id", req.session.user)
 
                     req.flash("success_messages", `Welcome again, ${accountLogin.get("first_name")} ${accountLogin.get("last_name")}`)
-                    
+
                     res.redirect('/accounts/profile');
 
                 } else {
